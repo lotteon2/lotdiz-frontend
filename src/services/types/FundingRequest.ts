@@ -45,4 +45,14 @@ export interface FundingDetail {
     deliveryAddressRoadName: string,
     deliveryAddressDetail: string,
     deliveryAddressZipCode: string,
+    isFirstAgreementChecked: boolean,
+    isSecondAgreementChecked: boolean,
+}
+
+export interface FundingProductsRequest {
+    productId: number;
+    productFundingPrice: number;
+    productFundingQuantity: number;
+    productName: string;
+    productDescription: string;
 }

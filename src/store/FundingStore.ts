@@ -1,11 +1,11 @@
-import {defineStore} from "pinia";
-import type {FundingDetail} from "@/services/types/FundingRequest";
+import { defineStore } from 'pinia'
+import type { FundingDetail } from '@/services/types/FundingRequest'
 
 interface FundingState {
     fundingDetails: FundingDetail;
 }
 
-export const useFundingStore = defineStore("funding", {
+export const useFundingStore = defineStore('funding', {
 
     state: (): FundingState => ({
         fundingDetails: {
@@ -28,6 +28,8 @@ export const useFundingStore = defineStore("funding", {
             deliveryAddressRoadName: '',
             deliveryAddressDetail: '',
             deliveryAddressZipCode: '',
+            isFirstAgreementChecked: false,
+            isSecondAgreementChecked: false
         }
     }),
 
@@ -35,8 +37,8 @@ export const useFundingStore = defineStore("funding", {
         // 부분적인 데이터 업데이트를 위한 메소드
         updateData(partialFundingInfos: Partial<FundingDetail>) {
             // Object.assign을 사용하여 현재 상태에 새로운 데이터를 병합
-            Object.assign(this.fundingDetails, partialFundingInfos);
+            Object.assign(this.fundingDetails, partialFundingInfos)
         }
-    },
+    }
 
-});
+})

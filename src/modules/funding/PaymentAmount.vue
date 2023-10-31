@@ -13,7 +13,7 @@
         <div class='payments-info-item-right' style='color: red'>-{{ usedPoint ? usedPoint + '원' : '0원' }}</div>
       </div>
       <div class='payments-info-item'>
-        <div class='payments-info-item-left'>멤버십 등급 할인(3%)</div>
+        <div class='payments-info-item-left'>멤버십 등급 할인({{ membershipDiscount }}%)</div>
         <div class='payments-info-item-right' style='color: red'>-2,238원</div>
       </div>
       <div class='payments-info-item'>
@@ -33,10 +33,19 @@
 </template>
 
 <script lang='ts' setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useFundingStore } from '@/store/FundingStore'
+import { getMembershipInfoForShow } from '@/services/api/MemberService'
+import type { MembershipInfoForShowResponse } from '@/services/types/MemberResponse'
 
 const fundingStore = useFundingStore()
+
+const membershipDiscount = ref(0)
+
+const response = getMembershipInfoForShow()
+response.then((data: MembershipInfoForShowResponse) => {
+  membershipDiscount.value = data.membershipPolicyDiscountRate
+})
 
 const supportAmount = computed(() => {
   return fundingStore.fundingDetails.fundingSupportAmount
