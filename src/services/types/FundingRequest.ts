@@ -6,11 +6,21 @@ export interface FundingProductsRequest {
     productDescription: string;
 }
 
+
 export interface FundingPaymentsReadyInfo {
     quantity: number;
     itemName: string;
     totalAmount: string;
     taxFreeAmount: string;
+}
+
+export interface PayReadyResponse {
+    payReady: FundingPaymentReadyResponse;
+}
+
+export interface FundingPaymentReadyResponse {
+    tid: string;
+    next_redirect_pc_url: string;
 }
 
 export interface FundingDetail {
@@ -35,4 +45,14 @@ export interface FundingDetail {
     deliveryAddressRoadName: string,
     deliveryAddressDetail: string,
     deliveryAddressZipCode: string,
+    isFirstAgreementChecked: boolean,
+    isSecondAgreementChecked: boolean,
+}
+
+export interface FundingProductsRequest {
+    productId: number;
+    productFundingPrice: number;
+    productFundingQuantity: number;
+    productName: string;
+    productDescription: string;
 }

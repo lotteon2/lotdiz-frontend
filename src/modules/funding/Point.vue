@@ -1,55 +1,73 @@
 <template>
-  <div class="point-section">
-    <div class="point-header">
-      <div class="point-font">포인트</div>
+  <div class='point-section'>
+    <div class='point-header'>
+      <div class='point-font'>포인트</div>
     </div>
-    <div class="point-contents">
-      <div class="point-inner-contents-left">
-        <div class="point-inner-contents-left-header">멤버십 적립 예정 포인트(1%)</div>
+    <div class='point-contents'>
+      <div class='point-inner-contents-left'>
+        <div class='point-inner-contents-left-header'>멤버십 적립 예정 포인트({{ memberPointRate }}%)</div>
       </div>
-      <div class="point-inner-contents-right">
-        <div class="point-inner-contents-line"></div>
-        <div class="point-inner-contents-right-header">
-          <span> 795P </span>
+      <div class='point-inner-contents-right'>
+        <div class='point-inner-contents-line'></div>
+        <div class='point-inner-contents-right-header'>
+          <span> {{ totalAmount * memberPointRate / 100 }} </span>
         </div>
       </div>
     </div>
-    <div class="point-contents">
-      <div class="point-inner-contents-left">
-        <div class="point-inner-contents-left-header">포인트 사용</div>
+    <div class='point-contents'>
+      <div class='point-inner-contents-left'>
+        <div class='point-inner-contents-left-header'>포인트 사용</div>
       </div>
-      <div class="point-inner-contents-right">
-        <div class="point-inner-contents-line"></div>
-        <div class="point-inner-contents-right-header">
-          <div>보유포인트 (110P)</div>
-          <input v-model="usedPoint" name="pointInput" type="number"/>
+      <div class='point-inner-contents-right'>
+        <div class='point-inner-contents-line'></div>
+        <div class='point-inner-contents-right-header'>
+          <div>보유포인트({{ memberPoint }})</div>
+          <input v-model='usedPoint' type='number' />
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-import {useFundingStore} from "@/store/FundingStore";
-import {ref, watch} from "vue";
+<script lang='ts' setup>
 
-export default {
-  setup() {
-    const fundingStore = useFundingStore();
+import { onMounted, ref, watch } from 'vue'
+import { useFundingStore } from '@/store/FundingStore'
+import { getMemberPointsForShow, getMembershipInfoForShow } from '@/services/api/MemberService'
 
-    const usedPoint = ref(fundingStore.fundingDetails.fundingUsedPoint);
+const fundingStore = useFundingStore()
+const memberPoint = ref(0)
+const memberPointRate = ref(0)
+const totalAmount = ref(35000)
 
-    watch(usedPoint, (newVal) => {
-      fundingStore.updateData({fundingUsedPoint: newVal});
-    });
+const usedPoint = ref(fundingStore.fundingDetails.fundingUsedPoint)
 
-    return {
-      usedPoint
-    }
+watch(usedPoint, (newVal, oldVal) => {
+  if (newVal > memberPoint.value) {
+    alert('보유하신 포인트 보다 더 많은 포인트를 사용할 수 없습니다.')
+    usedPoint.value = oldVal
+  } else {
+    fundingStore.updateData({ fundingUsedPoint: newVal })
+  }
+})
+
+onMounted(async () => {
+  try {
+    memberPoint.value = await getMemberPointsForShow()
+  } catch (e) {
+    console.log('오류발생: ', e)
   }
 
-}
+  getMembershipInfoForShow()
+    .then(response => {
+      memberPointRate.value = response.membershipPolicyPointAccumulationRate
+      //point.value = memberPointRate.value()
+    }).catch(error => {
+    console.error('멤버십 가입 정보 조회 실패:', error)
+  })
+})
 </script>
+
 
 <style>
 .point-section {

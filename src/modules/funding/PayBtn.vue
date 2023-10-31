@@ -1,6 +1,6 @@
 <template>
   <input
-      style="
+      style='
       width: 100%;
       height: 500%;
       background-color: #58c1c2;
@@ -9,20 +9,24 @@
       padding: 20px;
       border: 1px solid;
       margin: 10px 0 50px 0;
-    "
-      type="button"
-      value="결제하기"
-      @click="readyForFundingPayments"
+    '
+      type='button'
+      value='결제하기'
+      @click='readyForFundingPayments'
   />
 </template>
 
-<script lang="ts" setup>
-import {onMounted, onUnmounted} from 'vue';
-import {useRouter} from 'vue-router';
-import type {FundingPaymentsReadyInfo} from '../../services/types/FundingRequest'
-import {postFundingInfoForPayReady} from "@/services/api/FundingService";
+<script lang='ts' setup>
+import { onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+import type {
+  FundingPaymentReadyResponse,
+  FundingPaymentsReadyInfo,
+  PayReadyResponse
+} from '@/services/types/FundingRequest'
+import { postFundingInfoForPayReady } from '@/services/api/FundingService'
 
-const router = useRouter();
+const router = useRouter()
 
 const readyForFundingPayments = () => {
   const fundingPaymentsRequest: FundingPaymentsReadyInfo = {
@@ -31,15 +35,15 @@ const readyForFundingPayments = () => {
     totalAmount: '22000',
     taxFreeAmount: '0'
   }
-  const response: Promise<string> = postFundingInfoForPayReady(fundingPaymentsRequest)
-  console.log('response:', response)
+  const response: Promise<PayReadyResponse> = postFundingInfoForPayReady(fundingPaymentsRequest)
 
   response
-      .then((data) => {
-        console.log(data);
-        const redirectUrl = data.next_redirect_pc_url;
-        window.localStorage.setItem("tid", data.tid);
-        console.log('redirectUrl:', redirectUrl)
+      .then((data: PayReadyResponse) => {
+        const fundingPaymentReadyResponse: FundingPaymentReadyResponse = data.payReady
+        const redirectUrl: string = fundingPaymentReadyResponse.next_redirect_pc_url
+        const tid: string = fundingPaymentReadyResponse.tid
+
+        window.localStorage.setItem('tid', tid)
         window.open(
             redirectUrl,
             '펀딩 결제 QR 코드',
@@ -51,20 +55,20 @@ const readyForFundingPayments = () => {
       })
 }
 
-const messageHandler = (event) => {
+const messageHandler = (event: MessageEvent) => {
   if (event.data === 'complete') {
     // 자식 페이지 작업 완료 후 route
-    router.push('/funding/details');
+    router.push('/funding/details')
   }
 }
 
 onMounted(() => {
-  window.addEventListener('message', messageHandler);
-});
+  window.addEventListener('message', messageHandler)
+})
 
 onUnmounted(() => {
-  window.removeEventListener('message', messageHandler);
-});
+  window.removeEventListener('message', messageHandler)
+})
 
 </script>
 
