@@ -66,11 +66,11 @@ import Rectangle from '@/modules/funding/Rectangle.vue'
 
 const fundingStore = useFundingStore()
 
-const supportAmount = ref(fundingStore.fundingDetails.fundingSupportAmount)
+const supportAmount = ref(fundingStore.fundingDetailInfo.fundingSupportAmount)
 
 // supporterWithUsIsNamePublic의 상태를 반대로 가져오기
 const invertedSupporterWithUsIsNamePublic = computed({
-  get: () => !fundingStore.fundingDetails.supporterWithUsIsNamePublic,
+  get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic,
   set: (value) => {
     fundingStore.updateData({ supporterWithUsIsNamePublic: !value })
   }
@@ -78,7 +78,7 @@ const invertedSupporterWithUsIsNamePublic = computed({
 
 // supporterWithUsIsAmountPublic의 상태를 반대로 가져오기
 const invertedSupporterWithUsIsAmountPublic = computed({
-  get: () => !fundingStore.fundingDetails.supporterWithUsIsAmountPublic,
+  get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic,
   set: (value) => {
     fundingStore.updateData({ supporterWithUsIsAmountPublic: !value })
   }

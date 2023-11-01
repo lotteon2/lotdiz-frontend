@@ -6,7 +6,7 @@
     <div class='payments-info-content'>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>상품 금액</div>
-        <div class='payments-info-item-right'>79,500원</div>
+        <div class='payments-info-item-right'>{{fundingTotalAmount}}</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>포인트 할인</div>
@@ -22,7 +22,7 @@
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>배송비</div>
-        <div class='payments-info-item-right'>0원</div>
+        <div class='payments-info-item-right'>{{ deliveryCost }}</div>
       </div>
       <div class='payments-info-item-total'>
         <div class='payments-info-item-total-left'>총 결제 금액</div>
@@ -37,8 +37,21 @@ import { computed, ref } from 'vue'
 import { useFundingStore } from '@/store/FundingStore'
 import { getMembershipInfoForShow } from '@/services/api/MemberService'
 import type { MembershipInfoForShowResponse } from '@/services/types/MemberResponse'
+import type { FundingProductsRequest } from '@/services/types/FundingRequest'
 
 const fundingStore = useFundingStore()
+const products = <FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
+const deliveryCost = ref<number>(0);
+let fundingTotalAmount = <number>(0);
+
+for ( const p of products) {
+  fundingTotalAmount += p.productFundingPrice * p.productFundingQuantity
+}
+
+if ( fundingTotalAmount < 50000) {
+  deliveryCost.value = 3000
+}
+
 
 const membershipDiscount = ref(0)
 
@@ -48,11 +61,11 @@ response.then((data: MembershipInfoForShowResponse) => {
 })
 
 const supportAmount = computed(() => {
-  return fundingStore.fundingDetails.fundingSupportAmount
+  return fundingStore.fundingDetailInfo.fundingSupportAmount
 })
 
 const usedPoint = computed(() => {
-  return fundingStore.fundingDetails.fundingUsedPoint
+  return fundingStore.fundingDetailInfo.fundingUsedPoint
 })
 </script>
 

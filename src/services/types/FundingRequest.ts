@@ -6,7 +6,6 @@ export interface FundingProductsRequest {
     productDescription: string;
 }
 
-
 export interface FundingPaymentsReadyInfo {
     quantity: number;
     itemName: string;
@@ -49,10 +48,26 @@ export interface FundingDetail {
     isSecondAgreementChecked: boolean,
 }
 
-export interface FundingProductsRequest {
-    productId: number;
-    productFundingPrice: number;
-    productFundingQuantity: number;
-    productName: string;
-    productDescription: string;
+export interface FundingDetailInfo {
+    projectId: number,
+    products: Array<FundingProductsRequest>,
+    itemName: string,
+    fundingSupporterEmail: string,
+    fundingTotalAmount: number,
+    fundingIsRefundable: boolean,
+    fundingSupportAmount: number,
+    fundingLotdealDiscountAmount: number,
+    fundingMembershipDiscountAmount: number,
+    fundingUsedPoint: number,
+    fundingPrivacyAgreement: boolean,
+    supporterWithUsIsAmountPublic: boolean,
+    supporterWithUsIsNamePublic: boolean,
+    deliveryCost: number,
+    fundingPaymentsActualAmount: number,
+    deliveryAddressRecipientName: string,
+    deliveryAddressRecipientPhoneNumber: string,
+    deliveryAddressRequest: string,
+    deliveryAddressRoadName: string,
+    deliveryAddressDetail: string,
+    deliveryAddressZipCode: string,
 }

@@ -59,12 +59,14 @@
 
 <script setup lang="ts">
 import type { Product } from '@/services/types/ProjectResponse';
-import type { FundingProductsRequest } from '@/services/types/FundingRequest';
+import type { FundingProductsRequest, FundingDetailInfo } from '@/services/types/FundingRequest'
 import { useProjectStore } from '@/store/ProjectStore';
+import { useFundingStore } from '@/store/FundingStore';
 import { ref, watch, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 
 const projectStore = useProjectStore();
+const fundingStore = useFundingStore();
 const router = useRouter();
 
 const products = ref<Array<Product>>([]);
@@ -97,21 +99,19 @@ const plusQuantity = (productId: number, productCurrentStockQuantity: number) =>
   }
 }
 
-const goFundingPage = (projectId:number, fundingProducts: Array<FundingProductsRequest>) => {
+const saveFundingProductsToStore = (projectId: number, fundingProducts: FundingProductsRequest[]) => {
+  const data: Partial<FundingDetailInfo> = {
+    projectId: projectId,
+    products: fundingProducts,
+  };
 
-  router.push({
-    name: 'funding',
-    state: {
-      projectId: projectId,
-      products: JSON.stringify(fundingProducts)
-    },
-  })
-}
+  fundingStore.updateData(data);
+  console.log(fundingStore.fundingDetailInfo);
+};
 
 const goFunding = () => {
 
   const fundingProducts: Array<FundingProductsRequest> = [];
-    
   products.value.forEach(product => {
 
     const quantity = fundingProductsQuantity.value.get(product.productId);
@@ -127,7 +127,7 @@ const goFunding = () => {
   });
 
   if (fundingProducts.length !=0 ) {
-    goFundingPage(projectId.value, fundingProducts);
+    saveFundingProductsToStore(projectId.value, fundingProducts);
   } else {
     alert("수량을 선택해주세요.")
   }

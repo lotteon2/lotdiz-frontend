@@ -22,11 +22,15 @@ import { useRouter } from 'vue-router'
 import type {
   FundingPaymentReadyResponse,
   FundingPaymentsReadyInfo,
-  PayReadyResponse
+  PayReadyResponse,
+  FundingProductsRequest
 } from '@/services/types/FundingRequest'
 import { postFundingInfoForPayReady } from '@/services/api/FundingService'
+import { useFundingStore } from '@/store/FundingStore'
 
 const router = useRouter()
+const fundingStore = useFundingStore()
+const products = <FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
 
 const readyForFundingPayments = () => {
   const fundingPaymentsRequest: FundingPaymentsReadyInfo = {

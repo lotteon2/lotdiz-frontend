@@ -6,7 +6,7 @@ export interface FundingPaymentsApproveInfo {
     partnerOrderId: string;
     partnerUserId: string;
     projectId: number;
-    products: FundingProductsRequest[];
+    products: Array<FundingProductsRequest>;
     itemName: string;
     fundingSupporterEmail: string;
     fundingTotalAmount: number;
@@ -26,4 +26,7 @@ export interface FundingPaymentsApproveInfo {
     deliveryAddressRoadName: string;
     deliveryAddressDetail: string;
     deliveryAddressZipCode: string;
+    isFirstAgreementChecked: boolean;
+    isSecondAgreementChecked: boolean;
+
 }
