@@ -57,7 +57,7 @@ const usedPoint = computed(() => {
 </script>
 
 
-<style>
+<style scoped>
 .payments-container {
   display: flex;
   flex-direction: column;

@@ -28,7 +28,7 @@
 <script lang='ts' setup>
 </script>
 
-<style>
+<style scoped>
 .fundingstatus-container {
   display: flex;
   flex-direction: column;

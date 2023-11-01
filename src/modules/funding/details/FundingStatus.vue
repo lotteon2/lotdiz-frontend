@@ -4,7 +4,7 @@
       <div class='fundingstatus-header'>펀드+/푸드</div>
       <div class='fundingStatus-status'>
         <div
-            style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
+          style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
         <div>진행중</div>
       </div>
       <div class='fundingstatus-info-item'>
@@ -75,7 +75,7 @@
 <script lang='ts' setup>
 </script>
 
-<style>
+<style scoped>
 .fundingstatus-container {
   display: flex;
   flex-direction: column;

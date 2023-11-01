@@ -12,7 +12,7 @@
 <script lang='ts' setup>
 </script>
 
-<style>
+<style scoped>
 .kakaopay-container {
   display: flex;
   flex-direction: column;

@@ -60,7 +60,7 @@ const products = ref<Product[]>([
 </script>
 
 
-<style>
+<style scoped>
 .product-container {
   display: flex;
   flex-direction: column;

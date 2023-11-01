@@ -33,7 +33,7 @@ watch(isSecondAgreementChecked, (newValue) => {
 })
 </script>
 
-<style>
+<style scoped>
 .agreement-container {
   display: flex;
   flex-direction: column;

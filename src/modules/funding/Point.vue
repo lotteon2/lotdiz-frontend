@@ -69,7 +69,7 @@ onMounted(async () => {
 </script>
 
 
-<style>
+<style scoped>
 .point-section {
   display: flex;
   flex-direction: column;
