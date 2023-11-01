@@ -12,6 +12,7 @@
             name="user_email"
             id="input-cert-email"
             placeholder="이메일을 입력해주세요"
+            v-model='toEmail'
             required
           />
           <input id="btn-cert-email" type="submit" value="Send" />
@@ -49,7 +50,7 @@ const { VITE_PUBLIC_KEY, VITE_SERVER_ID, VITE_TEMPLATE_ID } = import.meta.env;
 const memberStore = useMemberStore();
 const isEmailSent = ref(false);
 const isEmailCert = ref(false);
-
+const toEmail = ref('');
 
 const sendEmail = () => {
   emailjs.init(VITE_PUBLIC_KEY);
@@ -58,15 +59,14 @@ const sendEmail = () => {
     from_name: 'Lotdiz',
     to_name: memberStore.memberName,
     message: `인증되었습니다.
-    확인을 눌러주세요`
+    확인을 눌러주세요`,
+    to_email: toEmail.value
   }
 
   emailjs.send(VITE_SERVER_ID, VITE_TEMPLATE_ID, params).then(
     (result) => {
       isEmailSent.value = true;
-      // loader.hide();
       alert('해당 메일로 인증 메시지가 발송되었습니다.');
-      console.log('SUCCESS!', result.text);
     },
     (error) => {
       console.error('FAILED...', error.text);
@@ -117,7 +117,7 @@ const decreaseActiveNo = () => {
 }
 </script>
 
-<style>
+<style scoped>
 @import '@/assets/css/member/sign-up-common.css';
 
 @import '@/assets/css/member/sign-up-email-auth.css';

@@ -35,7 +35,15 @@
       </div>
     </div>
     <div id='member-bar'>
-      <RouterLink to='/notifications'>
+      <div class='sign-btn' @click='preworkBeforeGo'>
+        <RouterLink v-if='jwtToken === null' to='/member/sign-in'>로그인</RouterLink>
+      </div>
+
+      <div class='sign-btn' @click='preworkBeforeGo'>
+        <RouterLink v-if='jwtToken === null' to='/member/sign-up'>회원가입</RouterLink>
+      </div>
+
+      <RouterLink v-if='jwtToken !== null' to='/notifications'>
         <div class='notification-number-box'>
           <svg xmlns='http://www.w3.org/2000/svg' width='35' height='35' viewBox='0 0 35 35' fill='none'>
             <path
@@ -54,17 +62,10 @@
           </div>
         </div>
       </RouterLink>
-      <div id='member-bar'>
-        <RouterLink v-if='jwtToken !== null' to='/member/my-page'>
-          <div class='sign-btn'>마이페이지</div>
-        </RouterLink>
-        <RouterLink v-if='jwtToken === null' to='/member/sign-in'>
-          <div class='sign-btn'>로그인</div>
-        </RouterLink>
-        <RouterLink v-if='jwtToken === null' to='/member/sign-up'>
-          <div class='sign-btn'>회원가입</div>
-        </RouterLink>
-      </div>
+
+      <RouterLink v-if='jwtToken !== null' to='/member/my-page'>
+        <div class='sign-btn'>마이페이지</div>
+      </RouterLink>
     </div>
   </div>
 </template>
@@ -73,7 +74,9 @@
 import { onBeforeMount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getNumberOfNotification } from '@/services/api/NotificationService'
+import { useHeaderStore } from '@/stores/headerStore'
 
+const headerStore = useHeaderStore()
 const jwtToken = ref(localStorage.getItem('jwtToken'))
 
 const route = useRoute()
@@ -107,9 +110,15 @@ const toggleDropdown = () => {
 }
 
 onBeforeMount(async () => {
-  const notificationCnt = await getNumberOfNotification()
-  notification.value = notificationCnt['unreadNotificationCount']
+  if(jwtToken !== null) {
+    const notificationCnt = await getNumberOfNotification()
+    notification.value = notificationCnt['unreadNotificationCount']
+  }
 })
+
+const preworkBeforeGo = () => {
+  headerStore.assignIsNoHeaderPath(true)
+}
 
 const checkPath = (path: string) => {
   if (path === '/lotdeal') {

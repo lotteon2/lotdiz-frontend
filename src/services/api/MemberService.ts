@@ -2,7 +2,8 @@ import { getData, postMemberData, deleteData, postData, putData } from './APISpe
 import type {
   MemberInfoForQueryResponse,
   KakaoPayReadyResponse,
-  MembershipInfoForShowResponse
+  MembershipInfoForShowResponse,
+  LikesDetailResponse
 } from '../types/MemberResponse'
 import type {
   MemberInfoForSignUpRequest,
@@ -52,7 +53,6 @@ export const postInfoForSignIn = async (infoForSignIn: InfoForSignIn) => {
 
 export const getIsDulicatedForCheck = async (username: string) => {
   try {
-    console.log('username:', username)
     const response = await postMemberData<boolean>(`/member-service/api/members/isDuplicated`, username)
     return response.data.data
   } catch (error: unknown) {
@@ -100,5 +100,23 @@ export const putMemberInfoForChange = async (memberInfoForChangeRequest: MemberI
     return response.data
   } catch (error: unknown) {
     throw new Error('회원 정보 수정 실패')
+  }
+}
+
+export const postSignOut = async () => {
+  try {
+    const response = await postMemberData('/member-service/api/sign-out')
+    return response.data;
+  } catch (error: unknown) {
+    throw new Error('로그아웃 실패')
+  }
+}
+
+export const getLikesList = async () => {
+  try {
+    const response = await getData<LikesDetailResponse[]>('/member-service/api/members/likes')
+    return response.data;
+  } catch (error: unknown) {
+    throw new Error('찜목록 조회 실패')
   }
 }
