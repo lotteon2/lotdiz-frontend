@@ -1,73 +1,63 @@
 <template>
   <div>
-    <input class="btn-style" type="button" value="배송지 선택" @click="openModal" />
+    <input class='btn-style' type='button' value='배송지 선택' @click='openModal'/>
 
     <!-- 컴포넌트 MyModal -->
-    <MyModal v-if="modal" @close="closeModal">
+    <MyModal v-if='modal' @close='closeModal'>
       <!-- default 슬롯 콘텐츠 -->
-      <p style="text-align: center">배송지 선택</p>
-      <hr />
+      <p style='text-align: center'>배송지 선택</p>
+      <hr/>
       <div>
-        <div v-for="(address, index) in addressList" :key="index" class="address-card">
-          <div class="address-card-name">{{ address.name }}</div>
-          <div v-if="address.isDefault" class="address-default">
-            <div class="address-default-layout">기본 배송지</div>
+        <div v-for='(address, index) in deliveryAddressInfo' :key='index' class='address-card'>
+          <input type="hidden" value={{address.deliveryAddressId}}/>
+          <div class='address-card-name'>{{ address.deliveryAddressRecipientName }}</div>
+          <div v-if='address.deliveryAddressIsDefault' class='address-default'>
+            <div class='address-default-layout'>기본 배송지</div>
           </div>
-          <div class="address-details">{{ address.address }}</div>
-          <div class="address-details">{{ address.details }}</div>
-          <div class="address-details">{{ address.phone }}</div>
-          <div class="address-details">{{ address.request }}</div>
-          <div class="address-btn-layout">
-            <div class="address-btn-modify">
-              <div style="text-align: center; color: blue" @click="editAddress(index)">수정</div>
+          <div class='address-details'>{{ address.deliveryAddressRoadName }}</div>
+          <div class='address-details'>{{ address.deliveryAddressDetail }}</div>
+          <div class='address-details'>{{ address.deliveryAddressRecipientPhoneNumber }}</div>
+          <div class='address-details'>{{ address.deliveryAddressRequest }}</div>
+          <div class='address-btn-layout'>
+            <div class='address-btn-modify'>
+              <div style='text-align: center; color: blue' @click='editAddress(index)'>수정</div>
             </div>
-            <div class="address-btn-select">
-              <div style="text-align: center; color: white" @click="selectAddress(index)">선택</div>
+            <div class='address-btn-select'>
+              <div style='text-align: center; color: white' @click='selectAddress(index)'>선택</div>
             </div>
           </div>
         </div>
 
-        <div class="new-address">
-          <div style="color: #466fd8; pointer: default" @click="addAddress">+ 배송지 추가</div>
+        <div class='new-address'>
+          <div style='color: #466fd8; pointer: default' @click='addAddress'>+ 배송지 추가</div>
         </div>
       </div>
     </MyModal>
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
+<script lang='ts' setup>
+import {onMounted, ref} from 'vue'
 import MyModal from './MyModal.vue'
-
-interface Address {
-  name: string
-  isDefault: boolean
-  address: string
-  details: string
-  phone: string
-  request: string
-}
+import {getAddressForShow} from '@/services/api/MemberService'
+import type {DeliveryAddressInfoForShowResponse} from "@/services/types/MemberResponse";
 
 const modal = ref(false)
 const message = ref('')
-const addressList = ref<Address[]>([
-  {
-    name: '이름1',
-    isDefault: true,
-    address: '경상북도 구미시 인동22길 22',
-    details: '305호',
-    phone: '010-1234-5678',
-    request: '문 앞'
-  },
-  {
-    name: '이름2',
-    isDefault: false,
-    address: '서울특별시 강동구 올림픽로22길 23',
-    details: '1101호',
-    phone: '010-5678-1234',
-    request: '경비실'
+
+const response: Promise<Array<DeliveryAddressInfoForShowResponse>> = getAddressForShow();
+const deliveryAddressInfo = ref<Array<DeliveryAddressInfoForShowResponse>>([])
+
+
+onMounted(async () => {
+  try {
+    const response = await getAddressForShow();
+    console.log(response);
+    deliveryAddressInfo.value = response.data;
+  } catch (error) {
+    console.error('주소 정보를 불러오는 데 실패했습니다:', error);
   }
-])
+})
 
 const emit = defineEmits(['addAddress'])
 

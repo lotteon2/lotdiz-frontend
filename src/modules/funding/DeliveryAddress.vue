@@ -7,7 +7,7 @@
       <div class='delivery-info-item'>
         <div class='delivery-info-item-left'>이름</div>
         <div class='delivery-info-item-right'>
-          <input class='input-style' name='name' placeholder='ex) 홍길동 ' required type='text' />
+          <input class='input-style' name='name' placeholder='ex) 홍길동 ' required type='text'/>
         </div>
       </div>
       <div class='delivery-info-item'>
@@ -25,14 +25,14 @@
       <div class='delivery-info-item'>
         <div class='delivery-info-item-address-title'>주소</div>
         <div class='delivery-info-item-address-button'>
-          <AddressModal @addAddress='openPostcode' />
+          <AddressModal @addAddress='openPostcode'/>
         </div>
       </div>
     </div>
 
     <div style='display: flex; width: 810px; align-items: center; gap: 31px'>
       <div style='display: flex; align-items: flex-start; margin: 30px 0 30px 85px'>
-        <input name='isDefaultAddress' style='width: 25px; height: 25px' type='checkbox' />
+        <input name='isDefaultAddress' style='width: 25px; height: 25px' type='checkbox'/>
         <div style='margin-left: 30px; font-size: 1.2rem'>기본 배송지로 선택</div>
       </div>
     </div>
@@ -40,13 +40,13 @@
       <div class='delivery-info-item'>
         <div class='delivery-info-item-left'>우편번호</div>
         <div class='delivery-info-item-right'>
-          <input v-model='zipcode' class='input-style' readonly required type='text' />
+          <input v-model='zipcode' class='input-style' readonly required type='text'/>
         </div>
       </div>
       <div class='delivery-info-item'>
         <div class='delivery-info-item-left'>도로명주소</div>
         <div class='delivery-info-item-right'>
-          <input v-model='address' class='input-style' readonly type='text' />
+          <input v-model='address' class='input-style' readonly type='text'/>
         </div>
       </div>
       <div class='delivery-info-item'>
@@ -64,7 +64,7 @@
       <div class='delivery-info-item'>
         <div class='delivery-info-item-left'>배송 시 요청사항</div>
         <div class='delivery-info-item-right'>
-          <input class='input-style' name='request' placeholder='집 앞에 놓아주세요.' type='text' />
+          <input class='input-style' name='request' placeholder='집 앞에 놓아주세요.' type='text'/>
         </div>
       </div>
     </div>
@@ -72,9 +72,9 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, ref, watch } from 'vue'
+import {onMounted, ref, watch} from 'vue'
 import AddressModal from './AddressModal.vue'
-import { useFundingStore } from '@/store/FundingStore'
+import {useFundingStore} from '@/store/FundingStore'
 
 const zipcode = ref<string>('')
 const address = ref<string>('')
@@ -93,13 +93,13 @@ onMounted(() => {
 const fundingStore = useFundingStore()
 
 watch(zipcode, (newValue) => {
-  fundingStore.updateData({ deliveryAddressZipCode: newValue })
+  fundingStore.updateData({deliveryAddressZipCode: newValue})
 })
 watch(address, (newValue) => {
-  fundingStore.updateData({ deliveryAddressRoadName: newValue })
+  fundingStore.updateData({deliveryAddressRoadName: newValue})
 })
 watch(addressDetail, (newValue) => {
-  fundingStore.updateData({ deliveryAddressDetail: newValue })
+  fundingStore.updateData({deliveryAddressDetail: newValue})
 })
 
 interface IAddr {
@@ -111,7 +111,7 @@ const openPostcode = (isOpen: boolean) => {
   isNewAddress = isOpen
   if ((window as any).daum && (window as any).daum.Postcode) {
     new (window as any).daum.Postcode({
-      oncomplete: function(data: IAddr) {
+      oncomplete: function (data: IAddr) {
         address.value = data.address
         zipcode.value = data.zonecode
       }
@@ -120,7 +120,7 @@ const openPostcode = (isOpen: boolean) => {
 }
 </script>
 
-<style>
+<style scoped>
 .delivery-container {
   display: flex;
   flex-direction: column;
