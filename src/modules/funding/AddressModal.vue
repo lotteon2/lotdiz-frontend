@@ -1,15 +1,15 @@
 <template>
   <div>
-    <input class='btn-style' type='button' value='배송지 선택' @click='openModal'/>
+    <input class='btn-style' type='button' value='배송지 선택' @click='openModal' />
 
     <!-- 컴포넌트 MyModal -->
     <MyModal v-if='modal' @close='closeModal'>
       <!-- default 슬롯 콘텐츠 -->
       <p style='text-align: center'>배송지 선택</p>
-      <hr/>
+      <hr />
       <div>
         <div v-for='(address, index) in deliveryAddressInfo' :key='index' class='address-card'>
-          <input type="hidden" value={{address.deliveryAddressId}}/>
+          <input type='hidden' value='{{address.deliveryAddressId}}/'>
           <div class='address-card-name'>{{ address.deliveryAddressRecipientName }}</div>
           <div v-if='address.deliveryAddressIsDefault' class='address-default'>
             <div class='address-default-layout'>기본 배송지</div>
@@ -37,26 +37,19 @@
 </template>
 
 <script lang='ts' setup>
-import {onMounted, ref} from 'vue'
+import { ref } from 'vue'
 import MyModal from './MyModal.vue'
-import {getAddressForShow} from '@/services/api/MemberService'
-import type {DeliveryAddressInfoForShowResponse} from "@/services/types/MemberResponse";
+import { getAddressForShow } from '@/services/api/MemberService'
+import type { DeliveryAddressInfoForShowResponse } from '@/services/types/MemberResponse'
 
 const modal = ref(false)
 const message = ref('')
 
-const response: Promise<Array<DeliveryAddressInfoForShowResponse>> = getAddressForShow();
 const deliveryAddressInfo = ref<Array<DeliveryAddressInfoForShowResponse>>([])
 
-
-onMounted(async () => {
-  try {
-    const response = await getAddressForShow();
-    console.log(response);
-    deliveryAddressInfo.value = response.data;
-  } catch (error) {
-    console.error('주소 정보를 불러오는 데 실패했습니다:', error);
-  }
+const response: Promise<Array<DeliveryAddressInfoForShowResponse>> = getAddressForShow()
+response.then(data => {
+  deliveryAddressInfo.value = data
 })
 
 const emit = defineEmits(['addAddress'])

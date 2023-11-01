@@ -31,6 +31,7 @@ watch(isFirstAgreementChecked, (newValue) => {
 watch(isSecondAgreementChecked, (newValue) => {
   fundingStore.fundingDetails.isSecondAgreementChecked = newValue
 })
+
 </script>
 
 <style scoped>

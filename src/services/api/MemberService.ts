@@ -7,6 +7,12 @@ import type {
 } from '../types/MemberResponse'
 
 import type { ErrorResponse, SuccessResponse } from '@/services/types/APIResponse'
+import type {
+  InfoForSignIn,
+  MemberInfoForChangeRequest,
+  MemberInfoForSignUpRequest,
+  MembershipInfoForJoinRequest
+} from '@/services/types/MemberRequest'
 
 export const postMemberInfoForSignUp = async (memberInfoForSignUpRequst: MemberInfoForSignUpRequest) => {
     try {
@@ -101,8 +107,8 @@ export const putMemberInfoForChange = async (memberInfoForChangeRequest: MemberI
 
 export const getAddressForShow = async () => {
     try {
-        const response = await getData<DeliveryAddressInfoForShowResponse[]>('/member-service/api/members/delivery-address')
-        return response
+        const response = await getData<Array<DeliveryAddressInfoForShowResponse>>('/member-service/api/members/delivery-address')
+        return response.data
     } catch (error: unknown) {
         throw new Error('배송지 정보 조회 실패')
     }

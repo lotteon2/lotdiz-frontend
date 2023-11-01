@@ -3,7 +3,7 @@
     <div class='funding-list-header'>
       <div class='funding-list-left'>
         <div
-          style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
+            style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
         <div class='funding-list-status'>{{ funding.status }}</div>
       </div>
       <div style='width: 20%;'></div>
@@ -13,7 +13,7 @@
     </div>
     <div class='funding-list-body'>
       <div class='funding-list-img'>
-        <img :src='funding.imageUrl' alt='product img' style='width: 240px;' />
+        <img :src='funding.imageUrl' alt='product img' style='width: 240px;'/>
       </div>
       <div class='funding-list-contents'>
         <div class='funding-list-contents-header' style='color: #58C1C2;text-align: center;font-size: 20px;'>
@@ -56,7 +56,7 @@
 </template>
 
 <script lang='ts' setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const fundings = ref([
   {
@@ -176,7 +176,6 @@ const fundings = ref([
   display: flex;
   width: 1575px;
   align-items: flex-start;
-//gap: 1118px;
 }
 
 .funding-status {
