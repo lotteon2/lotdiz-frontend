@@ -1,28 +1,27 @@
 <template>
-  <div class="funding-list-card-wrapper">
-    <div class="funding-list-header">
-      <div class="funding-list-left">
+  <div class='funding-list-card-wrapper'>
+    <div class='funding-list-header'>
+      <div class='funding-list-left'>
         <div
-            style="border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1"></div>
-        <div class="funding-list-status">진행중</div>
+            style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
+        <div class='funding-list-status'>진행중</div>
       </div>
-      <div class="funding-list-right">
+      <div class='funding-list-right'>
         2023.09.25 참여
       </div>
     </div>
-    <div class="funding-list-body">
-      <div class="funding-list-img">
+    <div class='funding-list-body'>
+      <div class='funding-list-img'>
         <img
-            height="80px;"
-            src="https://cdn.wadiz.kr/wwwwadiz/green001/2023/0901/20230901151029859_236909.jpg/wadiz/resize/1200/format/jpg/quality/80/"
-            width="120px"/>
+            height='80px;'
+            src='https://cdn.wadiz.kr/wwwwadiz/green001/2023/0901/20230901151029859_236909.jpg/wadiz/resize/1200/format/jpg/quality/80/'
+            width='120px' />
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {}
+<script lang='ts' setup>
 </script>
 
 <style>

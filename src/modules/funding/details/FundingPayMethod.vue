@@ -1,25 +1,25 @@
 <template>
-  <div class="fundingstatus-container">
-    <div class="fundingstatus-content">
-      <div class="fundingstatus-info-item">
-        <div style="font-weight: bold">결제 정보</div>
+  <div class='fundingstatus-container'>
+    <div class='fundingstatus-content'>
+      <div class='fundingstatus-info-item'>
+        <div style='font-weight: bold'>결제 정보</div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           결제 방법
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             카카오페이
           </div>
         </div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           할부기간
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             일시불
           </div>
         </div>
@@ -29,8 +29,7 @@
   </div>
 </template>
 
-<script>
-export default {}
+<script lang='ts' setup>
 </script>
 
 <style>

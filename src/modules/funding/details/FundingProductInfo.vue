@@ -1,23 +1,23 @@
 <template>
-  <div class="fundingstatus-container">
-    <div class="fundingstatus-content">
-      <div class="fundingstatus-info-item">
-        <div style="font-weight: bold">상품 정보</div>
+  <div class='fundingstatus-container'>
+    <div class='fundingstatus-content'>
+      <div class='fundingstatus-info-item'>
+        <div style='font-weight: bold'>상품 정보</div>
       </div>
-      <div class="fundingstatus-info-item">
-        <div style="font-weight: bold">[슈퍼얼리버드] 홍+청무화과 1kg 세트</div>
+      <div class='fundingstatus-info-item'>
+        <div style='font-weight: bold'>[슈퍼얼리버드] 홍+청무화과 1kg 세트</div>
       </div>
-      <div class="fundingstatus-info-item">
+      <div class='fundingstatus-info-item'>
         <div>홍무화과와 청무화과를 한번에 만날 수 있는 기회 ! 부드러운 식감에 톡톡 터지는 식감 그리고 달큰한 맛까지 제대로된 무화과를 산지직송으로 만나보세요 :) * 무농약</div>
       </div>
-      <hr class="hr-style"/>
-      <div class="fundingstatus-info-item">
+      <hr class='hr-style' />
+      <div class='fundingstatus-info-item'>
         <div>
           31,000원 / 1개
         </div>
       </div>
-      <div class="fundingstatus-info-item">
-        <div style="color: #4FAFB1; font-weight: bold">
+      <div class='fundingstatus-info-item'>
+        <div style='color: #4FAFB1; font-weight: bold'>
           상품 준비중
         </div>
       </div>
@@ -25,8 +25,7 @@
   </div>
 </template>
 
-<script>
-export default {}
+<script lang='ts' setup>
 </script>
 
 <style>

@@ -47,14 +47,20 @@
           </div>
           <div class="activity-wrapper">
             <div class="activity-title">찜내역</div>
-            <div class="activity-open"><font-awesome-icon :icon="['fas', 'chevron-right']" /></div>
+            <div class="activity-open">
+              <a href='/member/likes-list'>
+                <font-awesome-icon :icon="['fas', 'chevron-right']" />
+              </a>
+            </div>
           </div>
         </div>
         <div id="activity-second-row">
           <div class="activity-wrapper">
             <div class="activity-title">개인정보수정</div>
             <div class="activity-open">
-              <font-awesome-icon :icon="['fas', 'chevron-right']"/>
+              <a href='/member/my-page/change'>
+                <font-awesome-icon :icon="['fas', 'chevron-right']" />
+              </a>
             </div>
           </div>
         </div>
@@ -80,7 +86,11 @@ onMounted(() => {
 
   getMembershipInfoForShow()
     .then(response => {
-      membershipGrade.value = response.membershipPolicyGrade
+      if(response == null) {
+        membershipGrade.value = ''
+      } else {
+        membershipGrade.value = response.membershipPolicyGrade
+      }
     }).catch(error => {
       console.error("멤버십 정보 조회 실패:", error);
   })
@@ -88,7 +98,7 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped>
 @import '@/assets/color.css';
 @import '@/assets/font.css';
 

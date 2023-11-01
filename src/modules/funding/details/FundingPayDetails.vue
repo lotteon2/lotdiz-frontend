@@ -1,56 +1,56 @@
 <template>
-  <div class="fundingstatus-container">
-    <div class="fundingstatus-content">
-      <div class="fundingstatus-info-item">
-        <div style="font-weight: bold">결제 내역</div>
+  <div class='fundingstatus-container'>
+    <div class='fundingstatus-content'>
+      <div class='fundingstatus-info-item'>
+        <div style='font-weight: bold'>결제 내역</div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           상품 금액
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             31,000원
           </div>
         </div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           포인트 차감금액
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             - 0원
           </div>
         </div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           추가 후원금
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             0원
           </div>
         </div>
       </div>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left">
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
           배송비
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
             0원
           </div>
         </div>
       </div>
-      <hr class="hr-style"/>
-      <div class="fundingstatus-info-item-details">
-        <div class="fundingstatus-info-item-left" style="font-weight: bold">
+      <hr class='hr-style' />
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left' style='font-weight: bold'>
           최종 결제 금액
         </div>
-        <div class="fundingstatus-info-item-right">
-          <div style="text-align: right; color: #4fafb1; font-weight: bold;">
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right; color: #4fafb1; font-weight: bold;'>
             35,000원
           </div>
         </div>
@@ -59,8 +59,7 @@
   </div>
 </template>
 
-<script>
-export default {}
+<script lang='ts' setup>
 </script>
 
 <style>

@@ -153,17 +153,20 @@ const router = createRouter({
         {
             path: '/funding',
             name: 'funding',
-            component: FundingView
+            component: FundingView,
+            meta: { authRequired: true }
         },
         {
             path: '/payments/approve/:order/:user',
             name: 'payments',
-            component: FundingPayApproveView
+            component: FundingPayApproveView,
+            meta: { authRequired: true }
         },
         {
             path: '/funding/details',
             name: 'fundingDetails',
-            component: FundingDetailsView
+            component: FundingDetailsView,
+            meta: { authRequired: true }
         },
         {
             path: '/projects',
@@ -215,14 +218,26 @@ router.beforeEach(async (to, from, next) => {
 
     if (to.matched.some(record => record.meta.authRequired)) {
         if (jwtToken === null) {
+            alert('로그인이 필요한 페이지 입니다.')
             next({
                 path: '/member/sign-in',
                 query: { redirect: to.fullPath }
             })
+
             alert('로그인이 필요한 페이지 입니다.')
         }
+
+        if (to.matched.some(record => record.meta.authRequired)) {
+            if (jwtToken === null) {
+                next({
+                    path: '/member/sign-in',
+                    query: { redirect: to.fullPath }
+                })
+                alert('로그인이 필요한 페이지 입니다.')
+            }
+        }
+        next()
     }
-    next()
 })
 
 export default router

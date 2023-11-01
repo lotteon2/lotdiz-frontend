@@ -17,4 +17,4 @@ import FundingDelivery from "@/modules/funding/details/FundingDelivery.vue";
 
 </script>
 
-<style></style>
+<style scoped></style>
