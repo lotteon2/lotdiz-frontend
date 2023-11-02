@@ -1,7 +1,7 @@
 <template>
   <div class='product-container'>
     <!-- 반복되는 제품 정보를 배열로 정의 -->
-    <div v-for='product in products' :key='product.id' class='product-info-content'>
+    <div v-for='product in products' :key='product.productId' class='product-info-content'>
       <div class='product-info-item'>
         <div style='color: #4fafb1; font-weight: bold'>{{ product.productName }}</div>
       </div>
@@ -25,9 +25,10 @@
 <script lang='ts' setup>
 import type { FundingProductsRequest } from '@/services/types/FundingRequest'
 import { useFundingStore } from '@/store/FundingStore'
-const fundingStore = useFundingStore()
-const products = <FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
+import { ref } from 'vue'
 
+const fundingStore = useFundingStore()
+const products = ref<FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
 
 </script>
 

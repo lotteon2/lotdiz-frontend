@@ -31,32 +31,46 @@ import { useFundingStore } from '@/store/FundingStore'
 const router = useRouter()
 const fundingStore = useFundingStore()
 const products = <FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
+const fundingPaymentsRequest: FundingPaymentsReadyInfo = {
+  quantity: 0,
+  itemName: '',
+  totalAmount: 0,
+  taxFreeAmount: 0
+}
+
+fundingPaymentsRequest.itemName = products[0].productName + ' 그 외'
+
+for (const p of products) {
+  fundingPaymentsRequest.quantity += p.productFundingQuantity
+  fundingPaymentsRequest.totalAmount += p.productFundingPrice * p.productFundingQuantity
+}
+
+fundingStore.updateData({itemName : fundingPaymentsRequest.itemName })
 
 const readyForFundingPayments = () => {
-  const fundingPaymentsRequest: FundingPaymentsReadyInfo = {
-    quantity: 1,
-    itemName: '무화과 1kg',
-    totalAmount: '22000',
-    taxFreeAmount: '0'
+
+  if (fundingStore.fundingDetailInfo.fundingPrivacyAgreement == true) {
+    const response: Promise<PayReadyResponse> = postFundingInfoForPayReady(fundingPaymentsRequest)
+
+    response
+        .then((data: PayReadyResponse) => {
+          const fundingPaymentReadyResponse: FundingPaymentReadyResponse = data.payReady
+          const redirectUrl: string = fundingPaymentReadyResponse.next_redirect_pc_url
+          const tid: string = fundingPaymentReadyResponse.tid
+
+          window.localStorage.setItem('tid', tid)
+          window.open(
+              redirectUrl,
+              '펀딩 결제 QR 코드',
+              'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no'
+          )
+        })
+        .catch((error) => {
+          console.error('오류발생: ', error)
+        })
+  } else {
+    alert("약간 동의 후 펀딩 가능합니다.")
   }
-  const response: Promise<PayReadyResponse> = postFundingInfoForPayReady(fundingPaymentsRequest)
-
-  response
-      .then((data: PayReadyResponse) => {
-        const fundingPaymentReadyResponse: FundingPaymentReadyResponse = data.payReady
-        const redirectUrl: string = fundingPaymentReadyResponse.next_redirect_pc_url
-        const tid: string = fundingPaymentReadyResponse.tid
-
-        window.localStorage.setItem('tid', tid)
-        window.open(
-            redirectUrl,
-            '펀딩 결제 QR 코드',
-            'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no'
-        )
-      })
-      .catch((error) => {
-        console.error('오류발생: ', error)
-      })
 }
 
 const messageHandler = (event: MessageEvent) => {

@@ -32,7 +32,7 @@
               <label style="margin: 0 auto"
                 ><input
                   id="chk1"
-                  v-model="invertedSupporterWithUsIsNamePublic"
+                  v-model="supporterWithUsIsAmountPublic"
                   type="checkbox"
                 />이름 비공개</label
               >
@@ -41,7 +41,7 @@
               <label
                 ><input
                   id="chk2"
-                  v-model="invertedSupporterWithUsIsAmountPublic"
+                  v-model="supporterWithUsIsNamePublic"
                   type="checkbox"
                 />금액 비공개</label
               >
@@ -68,26 +68,39 @@ const fundingStore = useFundingStore()
 
 const supportAmount = ref(fundingStore.fundingDetailInfo.fundingSupportAmount)
 
-// supporterWithUsIsNamePublic의 상태를 반대로 가져오기
-const invertedSupporterWithUsIsNamePublic = computed({
-  get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic,
-  set: (value) => {
-    fundingStore.updateData({ supporterWithUsIsNamePublic: !value })
+const supporterWithUsIsAmountPublic = ref<boolean>(fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic)
+const supporterWithUsIsNamePublic = ref<boolean>(fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic)
+
+watch([supporterWithUsIsAmountPublic, supporterWithUsIsNamePublic], ([newSupporterWithUsIsAmountPublic, newSupporterWithUsIsNamePublic]) => {
+  fundingStore.updateData({supporterWithUsIsAmountPublic : newSupporterWithUsIsAmountPublic})
+  fundingStore.updateData({supporterWithUsIsNamePublic : newSupporterWithUsIsNamePublic})
+
+  if (supporterWithUsIsNamePublic.value == true && supporterWithUsIsAmountPublic.value == true) {
+    fundingStore.updateData({fundingPrivacyAgreement : true})
   }
 })
 
-// supporterWithUsIsAmountPublic의 상태를 반대로 가져오기
-const invertedSupporterWithUsIsAmountPublic = computed({
-  get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic,
-  set: (value) => {
-    fundingStore.updateData({ supporterWithUsIsAmountPublic: !value })
-  }
-})
-
-// supportAmount의 변경을 감지하고 store 업데이트
 watch(supportAmount, (newAmount) => {
   fundingStore.updateData({ fundingSupportAmount: newAmount })
 })
+
+// supporterWithUsIsNamePublic의 상태를 반대로 가져오기
+// const invertedSupporterWithUsIsNamePublic = computed({
+//   get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic,
+//   set: (value) => {
+//     fundingStore.updateData({ supporterWithUsIsNamePublic: !value })
+//   }
+// })
+//
+// // supporterWithUsIsAmountPublic의 상태를 반대로 가져오기
+// const invertedSupporterWithUsIsAmountPublic = computed({
+//   get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic,
+//   set: (value) => {
+//     fundingStore.updateData({ supporterWithUsIsAmountPublic: !value })
+//   }
+// })
+//
+
 </script>
 
 <style></style>

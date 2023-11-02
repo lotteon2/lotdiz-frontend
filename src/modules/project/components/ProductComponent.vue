@@ -10,7 +10,7 @@
       <div class="product-price-info">
         <div class="product-price-title">상품 가격</div>
         <div class="product-price-data" v-if='lotdealDueTime == null' >{{ product.productPrice }} 원</div>
-        <div class="product-price-data" v-else>{{ product.productPrice * 0.6 }} 원</div>
+        <div class="product-price-data" v-else><div class = "lotdeal-text"> 롯딜 할인가  </div> {{ product.productPrice * 0.6 }} 원</div>
       </div>
       <div class="product-current-stock-quantity-info">
         <div class="product-current-stock-quantity-title">남은 수량</div>
@@ -107,21 +107,32 @@ const saveFundingProductsToStore = (projectId: number, fundingProducts: FundingP
     projectId: projectId,
     products: fundingProducts,
   };
-
   fundingStore.updateData(data);
-  console.log(fundingStore.fundingDetailInfo);
 };
+
+const goFundingPage = () => {
+  router.push({
+    name: 'funding',
+  })
+}
 
 const goFunding = () => {
 
   const fundingProducts: Array<FundingProductsRequest> = [];
+  let productPrice = 0
+
   products.value.forEach(product => {
 
     const quantity = fundingProductsQuantity.value.get(product.productId);
+    productPrice = product.productPrice
+    if (lotdealDueTime.value != null) {
+        productPrice *= 0.6
+    }
+
     if (quantity != undefined && quantity > 0) {
       fundingProducts.push({
         productId: projectId.value,
-        productFundingPrice: product.productPrice,
+        productFundingPrice: productPrice,
         productName: product.productName,
         productDescription: product.productDescription,
         productFundingQuantity: quantity
@@ -131,6 +142,7 @@ const goFunding = () => {
 
   if (fundingProducts.length !=0 ) {
     saveFundingProductsToStore(projectId.value, fundingProducts);
+    goFundingPage();
   } else {
     alert("수량을 선택해주세요.")
   }

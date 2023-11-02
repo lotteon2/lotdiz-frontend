@@ -9,8 +9,8 @@ export interface FundingProductsRequest {
 export interface FundingPaymentsReadyInfo {
     quantity: number;
     itemName: string;
-    totalAmount: string;
-    taxFreeAmount: string;
+    totalAmount: number;
+    taxFreeAmount: number;
 }
 
 export interface PayReadyResponse {

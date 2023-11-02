@@ -14,14 +14,10 @@ import { useFundingStore } from '@/store/FundingStore'
 import type { FundingDetailInfo } from '@/services/types/FundingRequest'
 
 const route = useRoute()
-
 const fundingStore = useFundingStore();
-
 const fundingDetailInfo:FundingDetailInfo = fundingStore.fundingDetailInfo;
 
-console.log(fundingDetailInfo)
-
-const fundingPaymentsRequest: FundingPaymentsApproveInfo = {
+const fundingPaymentsRequest = <FundingPaymentsApproveInfo> {
   tid: window.localStorage.getItem('tid'),
   pgToken: '',
   partnerOrderId: '',

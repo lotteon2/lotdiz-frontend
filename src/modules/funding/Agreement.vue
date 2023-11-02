@@ -5,12 +5,12 @@
     </div>
     <div class='agreement-info-content'>
       <div style='display: flex; align-items: flex-start'>
-        <input v-model='supporterWithUsIsAmountPublic' required style='width: 25px; height: 25px'
+        <input v-model='isPurchaseConditionsPublic' required style='width: 25px; height: 25px'
                type='checkbox' />
         <div style='margin-left: 30px; font-size: 1.2rem'>구매조건, 결제 진행 및 결제 대행 서비스 동의(필수)</div>
       </div>
       <div style='display: flex; align-items: flex-start'>
-        <input v-model="supporterWithUsIsNamePublic" required style='width: 25px; height: 25px' type='checkbox' />
+        <input v-model="isPersonalInformationPublic" required style='width: 25px; height: 25px' type='checkbox' />
         <div style='margin-left: 30px; font-size: 1.2rem'>개인정보 제3자 제공 동의 (필수)</div>
       </div>
     </div>
@@ -23,14 +23,13 @@ import { useFundingStore } from '@/store/FundingStore'
 
 const fundingStore = useFundingStore()
 
-const supporterWithUsIsAmountPublic = ref(fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic)
-const supporterWithUsIsNamePublic = ref(fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic)
-watch(supporterWithUsIsAmountPublic, (newValue) => {
-  fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic = newValue
+const isPurchaseConditionsPublic = ref<boolean>(true)
+const isPersonalInformationPublic = ref<boolean>(true)
+
+watch([isPurchaseConditionsPublic, isPersonalInformationPublic], ([newPurchaseConditionsPublic, newPersonalInformationPublic]) => {
+    fundingStore.updateData({fundingPrivacyAgreement : newPersonalInformationPublic && newPurchaseConditionsPublic})
 })
-watch(supporterWithUsIsNamePublic, (newValue) => {
-  fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic = newValue
-})
+
 </script>
 
 <style>
