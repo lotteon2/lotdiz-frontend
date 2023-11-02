@@ -17,14 +17,14 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+import {onMounted, onUnmounted} from 'vue'
+import {useRouter} from 'vue-router'
 import type {
   FundingPaymentReadyResponse,
   FundingPaymentsReadyInfo,
   PayReadyResponse
 } from '@/services/types/FundingRequest'
-import { postFundingInfoForPayReady } from '@/services/api/FundingService'
+import {postFundingInfoForPayReady} from '@/services/api/FundingService'
 
 const router = useRouter()
 
@@ -56,9 +56,9 @@ const readyForFundingPayments = () => {
 }
 
 const messageHandler = (event: MessageEvent) => {
-  if (event.data === 'complete') {
+  if (event.data.status === 'complete') {
     // 자식 페이지 작업 완료 후 route
-    router.push('/funding/details')
+    router.push('/funding/details/' + event.data.fundingId)
   }
 }
 

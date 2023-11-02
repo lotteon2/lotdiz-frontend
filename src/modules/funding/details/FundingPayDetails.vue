@@ -10,7 +10,7 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            31,000원
+            {{ fundingTotalAmount }}원
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            - 0원
+            - {{ usedPoint }}원
           </div>
         </div>
       </div>
@@ -30,7 +30,17 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            0원
+            {{ fundingSupportAmount }}원
+          </div>
+        </div>
+      </div>
+      <div class='fundingstatus-info-item-details'>
+        <div class='fundingstatus-info-item-left'>
+          멤버십 등급 할인(3%)
+        </div>
+        <div class='fundingstatus-info-item-right'>
+          <div style='text-align: right;'>
+            - {{ fundingMembershipDiscountAmount }}원
           </div>
         </div>
       </div>
@@ -40,18 +50,18 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            0원
+            {{ deliveryCost }}원
           </div>
         </div>
       </div>
-      <hr class='hr-style' />
+      <hr class='hr-style'/>
       <div class='fundingstatus-info-item-details'>
         <div class='fundingstatus-info-item-left' style='font-weight: bold'>
           최종 결제 금액
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right; color: #4fafb1; font-weight: bold;'>
-            35,000원
+            {{ fundingPaymentsActualAmount }}원
           </div>
         </div>
       </div>
@@ -60,6 +70,32 @@
 </template>
 
 <script lang='ts' setup>
+import {useFundingDetailStore} from "@/store/FundingStore";
+import {onBeforeMount, ref} from "vue";
+import {getMembershipInfoForShow} from "@/services/api/MemberService";
+import type {MembershipInfoForShowResponse} from "@/services/types/MemberResponse";
+
+const fundingDetailStore = useFundingDetailStore();
+
+const fundingTotalAmount = fundingDetailStore.fundingDetailsInfo.fundingTotalAmount;
+const usedPoint = ref(fundingDetailStore.fundingDetailsInfo.fundingUsedPoint);
+const fundingSupportAmount = ref(fundingDetailStore.fundingDetailsInfo.fundingSupportAmount);
+const fundingMembershipDiscountAmount = ref(fundingDetailStore.fundingDetailsInfo.fundingMembershipDiscountAmount)
+const deliveryCost = ref(fundingDetailStore.fundingDetailsInfo.deliveryCost);
+
+const membershipDiscountRate = ref<number>(0);
+const fundingPaymentsActualAmount = ref<number>(0);
+
+onBeforeMount(() => {
+  const response = getMembershipInfoForShow();
+
+  response.then((data: MembershipInfoForShowResponse) => {
+    membershipDiscountRate.value = data.membershipPolicyDiscountRate
+    console.log("할인금액" + fundingDetailStore.fundingDetailsInfo.fundingTotalAmount * membershipDiscountRate.value * 0.01)
+    fundingPaymentsActualAmount.value = (fundingDetailStore.fundingDetailsInfo.fundingTotalAmount - fundingDetailStore.fundingDetailsInfo.fundingUsedPoint + fundingDetailStore.fundingDetailsInfo.fundingSupportAmount - (fundingDetailStore.fundingDetailsInfo.fundingTotalAmount * membershipDiscountRate.value * 0.01) + fundingDetailStore.fundingDetailsInfo.deliveryCost);
+  })
+
+})
 </script>
 
 <style scoped>

@@ -1,31 +1,41 @@
 <template>
   <div class='fundingstatus-container'>
-    <div class='fundingstatus-content'>
+    <div v-for="product in products" class='fundingstatus-content'>
       <div class='fundingstatus-info-item'>
         <div style='font-weight: bold'>상품 정보</div>
       </div>
       <div class='fundingstatus-info-item'>
-        <div style='font-weight: bold'>[슈퍼얼리버드] 홍+청무화과 1kg 세트</div>
+        <div style='font-weight: bold'>{{ product.productName }}</div>
       </div>
-      <div class='fundingstatus-info-item'>
-        <div>홍무화과와 청무화과를 한번에 만날 수 있는 기회 ! 부드러운 식감에 톡톡 터지는 식감 그리고 달큰한 맛까지 제대로된 무화과를 산지직송으로 만나보세요 :) * 무농약</div>
-      </div>
-      <hr class='hr-style' />
+      <!--      <div class='fundingstatus-info-item'>-->
+      <!--        <div>홍무화과와 청무화과를 한번에 만날 수 있는 기회 ! 부드러운 식감에 톡톡 터지는 식감 그리고 달큰한 맛까지 제대로된 무화과를 산지직송으로 만나보세요 :) * 무농약</div>-->
+      <!--      </div>-->
+      <hr class='hr-style'/>
       <div class='fundingstatus-info-item'>
         <div>
-          31,000원 / 1개
+          {{ product.productFundingPrice }}원 / {{ product.productFundingQuantity }}개
         </div>
       </div>
       <div class='fundingstatus-info-item'>
         <div style='color: #4FAFB1; font-weight: bold'>
-          상품 준비중
+          {{ projectStatus }}
         </div>
       </div>
+      <!--      </div>-->
     </div>
   </div>
 </template>
 
 <script lang='ts' setup>
+import {useFundingDetailStore} from "@/store/FundingStore";
+import {ref} from "vue";
+
+const fundingDetailStore = useFundingDetailStore();
+
+const products = fundingDetailStore.fundingDetailsInfo.products;
+
+const projectStatus = ref(fundingDetailStore.fundingDetailsInfo.projectStatus);
+
 </script>
 
 <style scoped>

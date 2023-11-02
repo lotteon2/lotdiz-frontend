@@ -6,10 +6,10 @@
 </template>
 
 <script lang='ts' setup>
-import { onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { postFundingInfoForPayApproval } from '@/services/api/FundingService'
-import type { FundingPaymentsApproveInfo } from '@/services/types/FundingPaymentsApproveInfo'
+import {onMounted} from 'vue'
+import {useRoute} from 'vue-router'
+import {postFundingInfoForPayApproval} from '@/services/api/FundingService'
+import type {FundingPaymentsApproveInfo} from '@/services/types/FundingPaymentsApproveInfo'
 
 const route = useRoute()
 
@@ -49,22 +49,32 @@ const fundingPaymentsRequest: FundingPaymentsApproveInfo = {
   deliveryAddressZipCode: '05321'
 }
 
-onMounted(
-  async () => {
-    try {
-      // index.ts에 url mapping 정의됨.
-      fundingPaymentsRequest.partnerOrderId = route.params.order as string
-      fundingPaymentsRequest.partnerUserId = route.params.user as string
-      fundingPaymentsRequest.pgToken = route.query.pg_token as string
+const messageData: any = {
+  status: 'complete',
+  fundingId: 0,
+}
 
-      // TODO: projectID 받아서 넣기
-      const response = await postFundingInfoForPayApproval(fundingPaymentsRequest, 1)
-      alert(response.detail)
-      window.opener.postMessage('complete', '*')
-      window.close()
-    } catch (error) {
-      console.error('An error occurred:' + error)
-    }
-  })
+onMounted(
+    async () => {
+      try {
+        // index.ts에 url mapping 정의됨.
+        fundingPaymentsRequest.partnerOrderId = route.params.order as string
+        fundingPaymentsRequest.partnerUserId = route.params.user as string
+        fundingPaymentsRequest.pgToken = route.query.pg_token as string
+
+        console.log("partnerOrderId: " + fundingPaymentsRequest.partnerOrderId + "partnerUserId" + fundingPaymentsRequest.partnerUserId)
+        console.log(fundingPaymentsRequest.pgToken);
+
+        // TODO: projectID 받아서 넣기
+        const response = await postFundingInfoForPayApproval(fundingPaymentsRequest, 1)
+        alert(response.detail)
+        messageData.fundingId = response.data
+
+        window.opener.postMessage(messageData, '*')
+        window.close()
+      } catch (error) {
+        console.error('An error occurred:' + error)
+      }
+    })
 
 </script>

@@ -1,7 +1,7 @@
-import { postData } from './APISpec'
-import type { ErrorResponse, SuccessResponse } from '../types/APIResponse'
-import type { FundingPaymentsReadyInfo, PayReadyResponse } from '../types/FundingRequest'
-import type { FundingPaymentsApproveInfo } from '@/services/types/FundingPaymentsApproveInfo'
+import {getData, postData} from './APISpec'
+import type {ErrorResponse, SuccessResponse} from '../types/APIResponse'
+import type {FundingDetailsInfoResponse, FundingPaymentsReadyInfo, PayReadyResponse} from '../types/FundingRequest'
+import type {FundingPaymentsApproveInfo} from '@/services/types/FundingPaymentsApproveInfo'
 
 export const postFundingInfoForPayReady = async (fundingPaymentsInfo: FundingPaymentsReadyInfo): Promise<PayReadyResponse> => {
     try {
@@ -14,9 +14,18 @@ export const postFundingInfoForPayReady = async (fundingPaymentsInfo: FundingPay
 
 export const postFundingInfoForPayApproval = async (fundingPaymentsApproveInfo: FundingPaymentsApproveInfo, projectId: number) => {
     try {
-        const response = await postData<object>(`/funding-service/api/projects/${projectId}/fundings`, fundingPaymentsApproveInfo)
+        const response: SuccessResponse<object> = await postData<object>(`/funding-service/api/projects/${projectId}/fundings`, fundingPaymentsApproveInfo)
         return response
 
+    } catch (error: unknown) {
+        throw new Error((<ErrorResponse>error).detail)
+    }
+}
+
+export const getInfoForFundingDetails = async (fundingId: number) => {
+    try {
+        const response = await getData<FundingDetailsInfoResponse>(`/funding-service/api/fundings/${fundingId}`)
+        return response
     } catch (error: unknown) {
         throw new Error((<ErrorResponse>error).detail)
     }

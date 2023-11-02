@@ -1,3 +1,5 @@
+import type {ProductFundingInfoResponse} from '@/services/types/ProductItemType'
+
 export interface FundingProductsRequest {
     productId: number;
     productFundingPrice: number;
@@ -55,4 +57,27 @@ export interface FundingProductsRequest {
     productFundingQuantity: number;
     productName: string;
     productDescription: string;
+}
+
+export interface FundingDetailsInfoResponse {
+    projectId: number
+    projectStatus: string;
+    projectName: string;
+    makerName: string;
+    fundingId: number;
+    createdAt: string;
+    endDate: string;
+    fundingStatus: string;
+    fundingTotalAmount: number;
+    fundingUsedPoint: number;
+    fundingSupportAmount: number;
+    fundingMembershipDiscountAmount: number;
+    fundingPaymentsActualAmount: number;
+    products: Array<ProductFundingInfoResponse>;
+    deliveryCost: number;
+    deliveryRecipientName: string;
+    deliveryRecipientPhoneNumber: string;
+    deliveryRoadName: string;
+    deliveryAddressDetail: string;
+    deliveryZipcode: string;
 }

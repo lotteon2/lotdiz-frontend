@@ -1,25 +1,25 @@
 <template>
   <div class='fundingstatus-container'>
     <div class='fundingstatus-content'>
-      <div class='fundingstatus-header'>펀드+/푸드</div>
+      <div class='fundingstatus-header'>롯드+</div>
       <div class='fundingStatus-status'>
         <div
-          style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
-        <div>진행중</div>
+            style='border: 1px solid; width: 15px; height: 15px; border-radius: 50px; background-color: #4fafb1'></div>
+        <div>{{ projectStatus }}</div>
       </div>
       <div class='fundingstatus-info-item'>
-        <div style='font-weight: bold'>평점5.0/마지막수확ㅣ진~하게 완숙된 초 달큰한 무화과, 홍&청무화과세트</div>
+        <div style='font-weight: bold'>{{ projectName }}</div>
       </div>
       <div class='fundingstatus-info-item'>
-        <div>by 올데이온(alldayON)</div>
+        <div>{{ makerName }}</div>
       </div>
       <div class='fundingstatus-info-item-details'>
         <div class='fundingstatus-info-item-left'>
-          결제 번호
+          펀딩번호
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            11217377
+            {{ fundingId }}
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            2023.09.25 10:21
+            {{ createdAt }}
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            2023.10.08
+            {{ endDate }}
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
         </div>
         <div class='fundingstatus-info-item-right'>
           <div style='text-align: right;'>
-            결제 완료
+            {{ fundingStatus === 'COMPLETED' ? '펀딩완료' : fundingStatus }}
           </div>
         </div>
       </div>
@@ -61,10 +61,10 @@
       <div class='fundingstatus-info-item'>
         <div class='fundingstatus-precaution-header'>
           <div class='info-style'>
-            <img alt='info logo' src='@/assets/info.png' />
+            <img alt='info logo' src='@/assets/info.png'/>
           </div>
           <div class='info-description'>
-            <div> 결제 취소 유의사항) 상품 옵션 변경과 결제 취소는 프로젝트 종료일인 "**2023.10.08**"까지 가능합니다.</div>
+            <div> 결제 취소 유의사항) 상품 옵션 변경과 결제 취소는 프로젝트 종료일인 "**{{ endDate }}**"까지 가능합니다.</div>
           </div>
         </div>
       </div>
@@ -73,9 +73,35 @@
 </template>
 
 <script lang='ts' setup>
+
+import {useFundingDetailStore} from "@/store/FundingStore";
+import {ref} from "vue";
+
+const fundingDetailStore = useFundingDetailStore();
+
+const projectStatus = ref(fundingDetailStore.fundingDetailsInfo.projectStatus)
+const projectName = ref(fundingDetailStore.fundingDetailsInfo.projectName)
+const fundingTotalAMount = ref(fundingDetailStore.fundingDetailsInfo.fundingTotalAmount)
+const makerName = ref(fundingDetailStore.fundingDetailsInfo.makerName)
+const fundingId = ref(fundingDetailStore.fundingDetailsInfo.fundingId)
+const createdAt = ref(fundingDetailStore.fundingDetailsInfo.createdAt.slice(0, 10))
+
+// const date = new Date(createdAt);
+// const year = date.getFullYear();
+// const month = date.getMonth() + 1;
+// const day = date.getDate();
+// const hour = date.getHours();
+// const minutes = date.getMinutes();
+// const formattedDate = `${year}-${month}-${day} ${hour}:${minutes}`;
+
+const endDate = ref(fundingDetailStore.fundingDetailsInfo.endDate.slice(0, 10))
+const fundingStatus = ref(fundingDetailStore.fundingDetailsInfo.fundingStatus)
+const fundingPaymentsActualAmount = ref(fundingDetailStore.fundingDetailsInfo.fundingPaymentsActualAmount)
+
+
 </script>
 
-<style scoped>
+<style>
 .fundingstatus-container {
   display: flex;
   flex-direction: column;
