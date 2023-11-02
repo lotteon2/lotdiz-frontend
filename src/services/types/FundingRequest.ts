@@ -8,12 +8,11 @@ export interface FundingProductsRequest {
     productDescription: string;
 }
 
-
 export interface FundingPaymentsReadyInfo {
     quantity: number;
     itemName: string;
-    totalAmount: string;
-    taxFreeAmount: string;
+    totalAmount: number;
+    taxFreeAmount: number;
 }
 
 export interface PayReadyResponse {
@@ -51,6 +50,7 @@ export interface FundingDetail {
     isSecondAgreementChecked: boolean,
 }
 
+
 export interface FundingProductsRequest {
     productId: number;
     productFundingPrice: number;
@@ -80,4 +80,28 @@ export interface FundingDetailsInfoResponse {
     deliveryRoadName: string;
     deliveryAddressDetail: string;
     deliveryZipcode: string;
+}
+
+export interface FundingDetailInfo {
+    projectId: number,
+    products: Array<FundingProductsRequest>,
+    itemName: string,
+    fundingSupporterEmail: string,
+    fundingTotalAmount: number,
+    fundingIsRefundable: boolean,
+    fundingSupportAmount: number,
+    fundingLotdealDiscountAmount: number,
+    fundingMembershipDiscountAmount: number,
+    fundingUsedPoint: number,
+    fundingPrivacyAgreement: boolean,
+    supporterWithUsIsAmountPublic: boolean,
+    supporterWithUsIsNamePublic: boolean,
+    deliveryCost: number,
+    fundingPaymentsActualAmount: number,
+    deliveryAddressRecipientName: string,
+    deliveryAddressRecipientPhoneNumber: string,
+    deliveryAddressRequest: string,
+    deliveryAddressRoadName: string,
+    deliveryAddressDetail: string,
+    deliveryAddressZipCode: string,
 }

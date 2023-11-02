@@ -58,7 +58,7 @@
 <script lang='ts' setup>
 import {ref} from 'vue'
 
-const fundings = ref([
+const fundings: any = ref([
   {
     status: '진행중',
     participationDate: '2023.09.25',

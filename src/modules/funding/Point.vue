@@ -40,7 +40,7 @@ const memberPoint = ref(0)
 const memberPointRate = ref(0)
 const totalAmount = ref(35000)
 
-const usedPoint = ref(fundingStore.fundingDetails.fundingUsedPoint)
+const usedPoint = ref(fundingStore.fundingDetailInfo.fundingUsedPoint)
 
 watch(usedPoint, (newVal, oldVal) => {
   if (newVal > memberPoint.value) {

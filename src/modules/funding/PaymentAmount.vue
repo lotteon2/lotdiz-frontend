@@ -6,15 +6,15 @@
     <div class='payments-info-content'>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>상품 금액</div>
-        <div class='payments-info-item-right'>79,500원</div>
+        <div class='payments-info-item-right'>{{ fundingTotalAmount }}</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>포인트 할인</div>
-        <div class='payments-info-item-right' style='color: red'>-{{ usedPoint ? usedPoint + '원' : '0원' }}</div>
+        <div class='payments-info-item-right' style='color: red'>{{ usedPoint ? '-' +  usedPoint + '원' : '0원' }}</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>멤버십 등급 할인({{ membershipDiscount }}%)</div>
-        <div class='payments-info-item-right' style='color: red'>-2,238원</div>
+        <div class='payments-info-item-right' style='color: red'>{{ fundingMembershipDiscountAmount }}</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>후원금</div>
@@ -22,38 +22,69 @@
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>배송비</div>
-        <div class='payments-info-item-right'>0원</div>
+        <div class='payments-info-item-right'>{{ deliveryCost }}</div>
       </div>
       <div class='payments-info-item-total'>
         <div class='payments-info-item-total-left'>총 결제 금액</div>
-        <div class='payments-info-item-total-right'>77,005원</div>
+        <div class='payments-info-item-total-right'>{{ fundingPaymentsActualAmount }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang='ts' setup>
-import { computed, ref } from 'vue'
-import { useFundingStore } from '@/store/FundingStore'
-import { getMembershipInfoForShow } from '@/services/api/MemberService'
-import type { MembershipInfoForShowResponse } from '@/services/types/MemberResponse'
+import {computed, onBeforeMount, ref, watch} from 'vue'
+import {useFundingStore} from '@/store/FundingStore'
+import {getMembershipInfoForShow} from '@/services/api/MemberService'
+import type {MembershipInfoForShowResponse} from '@/services/types/MemberResponse'
+import type {FundingProductsRequest} from '@/services/types/FundingRequest'
 
 const fundingStore = useFundingStore()
-
-const membershipDiscount = ref(0)
-
-const response = getMembershipInfoForShow()
-response.then((data: MembershipInfoForShowResponse) => {
-  membershipDiscount.value = data.membershipPolicyDiscountRate
-})
+const products = <FundingProductsRequest[]>(fundingStore.fundingDetailInfo.products);
+const deliveryCost = ref<number>(0);
+let fundingTotalAmount = ref<number>(0);
+const membershipDiscount = ref<number>(0);
+const fundingMembershipDiscountAmount = ref<number>(0);
+const fundingPaymentsActualAmount = ref<number>(0);
 
 const supportAmount = computed(() => {
-  return fundingStore.fundingDetails.fundingSupportAmount
+  return fundingStore.fundingDetailInfo.fundingSupportAmount
 })
 
 const usedPoint = computed(() => {
-  return fundingStore.fundingDetails.fundingUsedPoint
+  return fundingStore.fundingDetailInfo.fundingUsedPoint
 })
+
+for (const p of products) {
+  fundingTotalAmount.value += p.productFundingPrice * p.productFundingQuantity
+}
+
+if (fundingTotalAmount.value < 50000) {
+  deliveryCost.value = 3000
+}
+
+fundingMembershipDiscountAmount.value = fundingTotalAmount.value * (membershipDiscount.value * 0.01)
+fundingPaymentsActualAmount.value = fundingTotalAmount.value * (1 - membershipDiscount.value * 0.01) - usedPoint.value + supportAmount.value + deliveryCost.value
+
+fundingStore.updateData({fundingMembershipDiscountAmount: fundingMembershipDiscountAmount.value})
+fundingStore.updateData({deliveryCost: deliveryCost.value})
+fundingStore.updateData({fundingTotalAmount: fundingTotalAmount.value})
+
+watch ([usedPoint, supportAmount], ([newUsedPoint, newSupportAmount]) => {
+  fundingPaymentsActualAmount.value = fundingTotalAmount.value * (1 - membershipDiscount.value * 0.01) - newUsedPoint + newSupportAmount + deliveryCost.value
+  fundingStore.updateData({fundingPaymentsActualAmount: fundingPaymentsActualAmount.value})
+})
+
+onBeforeMount(() => {
+  const response = getMembershipInfoForShow();
+
+  response.then((data: MembershipInfoForShowResponse) => {
+    membershipDiscount.value = data.membershipPolicyDiscountRate
+  })
+
+})
+
+
 </script>
 
 

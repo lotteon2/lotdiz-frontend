@@ -82,7 +82,7 @@
           </div>
         </div>
       </div>
-      <textarea v-model='inputSupportSignatureContents' placeholder='입력' class='support-signature-modal-input-box' />
+      <textarea v-model='inputSupportSignatureContents' placeholder='내용은 5글자 이상 500 글자 이하만 입력 가능합니다.' class='support-signature-modal-input-box' />
 
       <div class='support-signature-modal-condition-box'></div>
       <div class='support-signature-modal-write-button-box'>

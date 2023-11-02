@@ -10,10 +10,14 @@ import {onMounted} from 'vue'
 import {useRoute} from 'vue-router'
 import {postFundingInfoForPayApproval} from '@/services/api/FundingService'
 import type {FundingPaymentsApproveInfo} from '@/services/types/FundingPaymentsApproveInfo'
+import {useFundingStore} from '@/store/FundingStore'
+import type {FundingDetailInfo} from '@/services/types/FundingRequest'
 
 const route = useRoute()
+const fundingStore = useFundingStore();
+const fundingDetailInfo: FundingDetailInfo = fundingStore.fundingDetailInfo;
 
-const fundingPaymentsRequest: FundingPaymentsApproveInfo = {
+const fundingPaymentsRequest = <FundingPaymentsApproveInfo>{
   tid: window.localStorage.getItem('tid'),
   pgToken: '',
   partnerOrderId: '',

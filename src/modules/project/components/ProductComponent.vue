@@ -10,7 +10,7 @@
       <div class="product-price-info">
         <div class="product-price-title">상품 가격</div>
         <div class="product-price-data" v-if='lotdealDueTime == null' >{{ product.productPrice }} 원</div>
-        <div class="product-price-data" v-else>{{ product.productPrice * 0.6 }} 원</div>
+        <div class="product-price-data" v-else><div class = "lotdeal-text"> 롯딜 할인가  </div> {{ product.productPrice * 0.6 }} 원</div>
       </div>
       <div class="product-current-stock-quantity-info">
         <div class="product-current-stock-quantity-title">남은 수량</div>
@@ -60,12 +60,14 @@
 
 <script setup lang="ts">
 import type { Product } from '@/services/types/ProjectResponse';
-import type { FundingProductsRequest } from '@/services/types/FundingRequest';
+import type { FundingProductsRequest, FundingDetailInfo } from '@/services/types/FundingRequest'
 import { useProjectStore } from '@/store/ProjectStore';
+import { useFundingStore } from '@/store/FundingStore';
 import { ref, watch, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
 
 const projectStore = useProjectStore();
+const fundingStore = useFundingStore();
 const router = useRouter();
 
 const products = ref<Array<Product>>([]);
@@ -100,28 +102,37 @@ const plusQuantity = (productId: number, productCurrentStockQuantity: number) =>
   }
 }
 
-const goFundingPage = (projectId:number, fundingProducts: Array<FundingProductsRequest>) => {
+const saveFundingProductsToStore = (projectId: number, fundingProducts: FundingProductsRequest[]) => {
+  const data: Partial<FundingDetailInfo> = {
+    projectId: projectId,
+    products: fundingProducts,
+  };
+  fundingStore.updateData(data);
+};
 
+const goFundingPage = () => {
   router.push({
     name: 'funding',
-    state: {
-      projectId: projectId,
-      products: JSON.stringify(fundingProducts)
-    },
   })
 }
 
 const goFunding = () => {
 
   const fundingProducts: Array<FundingProductsRequest> = [];
-    
+  let productPrice = 0
+
   products.value.forEach(product => {
 
     const quantity = fundingProductsQuantity.value.get(product.productId);
+    productPrice = product.productPrice
+    if (lotdealDueTime.value != null) {
+        productPrice *= 0.6
+    }
+
     if (quantity != undefined && quantity > 0) {
       fundingProducts.push({
         productId: projectId.value,
-        productFundingPrice: product.productPrice,
+        productFundingPrice: productPrice,
         productName: product.productName,
         productDescription: product.productDescription,
         productFundingQuantity: quantity
@@ -130,7 +141,8 @@ const goFunding = () => {
   });
 
   if (fundingProducts.length !=0 ) {
-    goFundingPage(projectId.value, fundingProducts);
+    saveFundingProductsToStore(projectId.value, fundingProducts);
+    goFundingPage();
   } else {
     alert("수량을 선택해주세요.")
   }

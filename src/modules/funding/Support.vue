@@ -6,13 +6,13 @@
           <div style='color: black; font-size: 18px'>후원금 더하기 (선택)</div>
         </td>
         <td>
-          <label for='supportAmount'>후원금을 더하여 메이커를 응원해주세요!</label> <br />
+          <label for='supportAmount'>후원금을 더하여 메이커를 응원해주세요!</label> <br/>
           <input
-            id='supportAmount'
-            v-model='supportAmount'
-            placeholder='0'
-            size='40'
-            type='number'
+              id='supportAmount'
+              v-model='supportAmount'
+              placeholder='0'
+              size='40'
+              type='number'
           />
           원을 추가로 후원합니다.
         </td>
@@ -29,20 +29,20 @@
           </p>
           <div style='display: flex; justify-content: space-around; margin-top: 10px; width: 75%'>
             <div>
-              <label style='margin: 0 auto'
+              <label style="margin: 0 auto"
               ><input
-                id='chk1'
-                v-model='invertedSupporterWithUsIsNamePublic'
-                type='checkbox'
+                  id="chk1"
+                  v-model="supporterWithUsIsAmountPublic"
+                  type="checkbox"
               />이름 비공개</label
               >
             </div>
             <div>
               <label
               ><input
-                id='chk2'
-                v-model='invertedSupporterWithUsIsAmountPublic'
-                type='checkbox'
+                  id="chk2"
+                  v-model="supporterWithUsIsNamePublic"
+                  type="checkbox"
               />금액 비공개</label
               >
             </div>
@@ -52,7 +52,7 @@
       <tr>
         <td></td>
         <td>
-          <Rectangle />
+          <Rectangle/>
         </td>
       </tr>
     </table>
@@ -60,34 +60,47 @@
 </template>
 
 <script lang='ts' setup>
-import { computed, ref, watch } from 'vue'
-import { useFundingStore } from '@/store/FundingStore'
+import {ref, watch} from 'vue'
+import {useFundingStore} from '@/store/FundingStore'
 import Rectangle from '@/modules/funding/Rectangle.vue'
 
 const fundingStore = useFundingStore()
 
-const supportAmount = ref(fundingStore.fundingDetails.fundingSupportAmount)
+const supportAmount = ref(fundingStore.fundingDetailInfo.fundingSupportAmount)
+
+const supporterWithUsIsAmountPublic = ref<boolean>(fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic)
+const supporterWithUsIsNamePublic = ref<boolean>(fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic)
+
+watch([supporterWithUsIsAmountPublic, supporterWithUsIsNamePublic], ([newSupporterWithUsIsAmountPublic, newSupporterWithUsIsNamePublic]) => {
+  fundingStore.updateData({supporterWithUsIsAmountPublic: newSupporterWithUsIsAmountPublic})
+  fundingStore.updateData({supporterWithUsIsNamePublic: newSupporterWithUsIsNamePublic})
+
+  if (supporterWithUsIsNamePublic.value == true && supporterWithUsIsAmountPublic.value == true) {
+    fundingStore.updateData({fundingPrivacyAgreement: true})
+  }
+})
+
+watch(supportAmount, (newAmount) => {
+  fundingStore.updateData({fundingSupportAmount: newAmount})
+})
 
 // supporterWithUsIsNamePublic의 상태를 반대로 가져오기
-const invertedSupporterWithUsIsNamePublic = computed({
-  get: () => !fundingStore.fundingDetails.supporterWithUsIsNamePublic,
-  set: (value) => {
-    fundingStore.updateData({ supporterWithUsIsNamePublic: !value })
-  }
-})
+// const invertedSupporterWithUsIsNamePublic = computed({
+//   get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsNamePublic,
+//   set: (value) => {
+//     fundingStore.updateData({ supporterWithUsIsNamePublic: !value })
+//   }
+// })
+//
+// // supporterWithUsIsAmountPublic의 상태를 반대로 가져오기
+// const invertedSupporterWithUsIsAmountPublic = computed({
+//   get: () => !fundingStore.fundingDetailInfo.supporterWithUsIsAmountPublic,
+//   set: (value) => {
+//     fundingStore.updateData({ supporterWithUsIsAmountPublic: !value })
+//   }
+// })
+//
 
-// supporterWithUsIsAmountPublic의 상태를 반대로 가져오기
-const invertedSupporterWithUsIsAmountPublic = computed({
-  get: () => !fundingStore.fundingDetails.supporterWithUsIsAmountPublic,
-  set: (value) => {
-    fundingStore.updateData({ supporterWithUsIsAmountPublic: !value })
-  }
-})
-
-// supportAmount의 변경을 감지하고 store 업데이트
-watch(supportAmount, (newAmount) => {
-  fundingStore.updateData({ fundingSupportAmount: newAmount })
-})
 </script>
 
 <style scoped></style>

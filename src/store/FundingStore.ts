@@ -1,15 +1,17 @@
 import {defineStore} from 'pinia'
-import type {FundingDetail, FundingDetailsInfoResponse} from '@/services/types/FundingRequest'
+import type {FundingDetailInfo, FundingDetailsInfoResponse} from '@/services/types/FundingRequest'
 import {getInfoForFundingDetails} from '@/services/api/FundingService'
 
 interface FundingState {
-    fundingDetails: FundingDetail;
+    fundingDetailInfo: FundingDetailInfo;
 }
 
 export const useFundingStore = defineStore('funding', {
 
     state: (): FundingState => ({
-        fundingDetails: {
+        fundingDetailInfo: {
+            projectId: 0,
+            products: [],
             itemName: '',
             fundingSupporterEmail: '',
             fundingTotalAmount: 0,
@@ -19,8 +21,8 @@ export const useFundingStore = defineStore('funding', {
             fundingMembershipDiscountAmount: 0,
             fundingUsedPoint: 0,
             fundingPrivacyAgreement: true,
-            supporterWithUsIsAmountPublic: true,
-            supporterWithUsIsNamePublic: true,
+            supporterWithUsIsAmountPublic: false,
+            supporterWithUsIsNamePublic: false,
             deliveryCost: 0,
             fundingPaymentsActualAmount: 0,
             deliveryAddressRecipientName: '',
@@ -29,16 +31,14 @@ export const useFundingStore = defineStore('funding', {
             deliveryAddressRoadName: '',
             deliveryAddressDetail: '',
             deliveryAddressZipCode: '',
-            isFirstAgreementChecked: false,
-            isSecondAgreementChecked: false
         }
     }),
 
     actions: {
         // 부분적인 데이터 업데이트를 위한 메소드
-        updateData(partialFundingInfos: Partial<FundingDetail>) {
+        updateData(partialFundingInfos: Partial<FundingDetailInfo>) {
             // Object.assign을 사용하여 현재 상태에 새로운 데이터를 병합
-            Object.assign(this.fundingDetails, partialFundingInfos)
+            Object.assign(this.fundingDetailInfo, partialFundingInfos)
         }
     }
 

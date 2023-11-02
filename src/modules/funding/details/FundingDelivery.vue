@@ -33,6 +33,7 @@
   </div>
 </template>
 
+
 <script lang='ts' setup>
 import {useFundingDetailStore} from "@/store/FundingStore";
 import {ref} from "vue";
@@ -44,7 +45,6 @@ const deliveryRecipientPhoneNumber = ref(fundingDetailStore.fundingDetailsInfo.d
 const deliveryzipcode = ref(fundingDetailStore.fundingDetailsInfo.deliveryZipcode);
 const deliveryRoadName = ref(fundingDetailStore.fundingDetailsInfo.deliveryRoadName);
 const deliveryAddressDetail = ref(fundingDetailStore.fundingDetailsInfo.deliveryAddressDetail);
-
 
 </script>
 

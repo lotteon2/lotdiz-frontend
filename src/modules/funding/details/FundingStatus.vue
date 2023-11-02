@@ -98,7 +98,6 @@ const endDate = ref(fundingDetailStore.fundingDetailsInfo.endDate.slice(0, 10))
 const fundingStatus = ref(fundingDetailStore.fundingDetailsInfo.fundingStatus)
 const fundingPaymentsActualAmount = ref(fundingDetailStore.fundingDetailsInfo.fundingPaymentsActualAmount)
 
-
 </script>
 
 <style>

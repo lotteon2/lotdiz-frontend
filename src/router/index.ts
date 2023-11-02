@@ -8,8 +8,8 @@ import SpecialExhibitionView from '@/views/SpecialExhibitionView.vue'
 import SupporterWithUsComponent from '@/modules/project/components/SupporterWithUsComponent.vue'
 import SupportSignatureComponent from '@/modules/project/components/SupportSignatureComponent.vue'
 import FundingView from '@/views/funding/FundingView.vue'
-import FundingPayApproveView from '@/views/funding/FundingPayApproveView.vue'
-import FundingDetailsView from '@/views/funding/FundingDetailsView.vue'
+import FundingPayApproveView from "@/views/funding/FundingPayApproveView.vue";
+import FundingDetailsView from "@/views/funding/FundingDetailsView.vue";
 
 import ProjectRegisterView from '@/views/ProjectRegisterView.vue'
 import DefaultInformation from '@/modules/project/components/DefaultInformation.vue'
@@ -19,7 +19,7 @@ import WriteStory from '@/modules/project/components/WriteStory.vue'
 import RegisterProducts from '@/modules/project/components/RegisterProducts.vue'
 import RegisteredProjects from '@/modules/maker/components/RegisteredProjects.vue'
 import NotificationView from '@/views/NotificationView.vue'
-import {client} from '@/services/api/APISpec'
+import {client} from "@/services/api/APISpec";
 import ProjectImageSectionComponent from '@/modules/project/components/ProjectImageSectionComponent.vue'
 import FundingListView from '@/views/funding/FundingListView.vue'
 import {useHeaderStore} from '@/stores/headerStore'
@@ -60,7 +60,7 @@ const router = createRouter({
                     path: 'success',
                     name: 'member-sign-up-success',
                     component: () => import('../modules/member/components/SignUpSuccess.vue')
-                }
+                },
             ]
         },
         {
@@ -84,7 +84,7 @@ const router = createRouter({
                     name: 'my-page-info-change',
                     component: () => import('../modules/member/components/MemberInfoChange.vue'),
                     meta: {authRequired: true}
-                }
+                },
             ],
             meta: {authRequired: true}
         },
@@ -155,17 +155,20 @@ const router = createRouter({
         {
             path: '/funding',
             name: 'funding',
-            component: FundingView
+            component: FundingView,
+            meta: {authRequired: true}
         },
         {
             path: '/payments/approve/:order/:user',
             name: 'payments',
-            component: FundingPayApproveView
+            component: FundingPayApproveView,
+            meta: {authRequired: true}
         },
         {
             path: '/funding/details',
             name: 'fundingDetails',
-            component: FundingDetailsView
+            component: FundingDetailsView,
+            meta: {authRequired: true}
         },
         {
             path: '/funding/list',
@@ -356,32 +359,32 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-    if (window.location.pathname == '/member/sign-in' || window.location.pathname == '/member/sign-up') {
-        const headerStore = useHeaderStore()
+    if (window.location.pathname == "/member/sign-in" || window.location.pathname == "/member/sign-up") {
+        const headerStore = useHeaderStore();
         headerStore.assignIsNoHeaderPath(true)
     }
 
-    const jwtToken = localStorage.getItem('jwtToken')
+    const jwtToken = localStorage.getItem("jwtToken");
 
     if (jwtToken !== null) {
         client.interceptors.request.use((config) => {
-            config.headers.setAuthorization(jwtToken)
-            return config
-        }, (error) => Promise.reject(error))
+            config.headers.setAuthorization(jwtToken);
+            return config;
+        }, (error) => Promise.reject(error));
     }
 
     if (to.matched.some(record => record.meta.authRequired)) {
         if (jwtToken === null) {
-            alert('로그인이 필요한 페이지 입니다.')
+            alert('로그인이 필요한 페이지 입니다.');
             next({
                 path: '/member/sign-in',
                 query: {redirect: to.fullPath}
             })
 
-            alert('로그인이 필요한 페이지 입니다.')
+            alert('로그인이 필요한 페이지 입니다.');
         }
     }
-    next()
-})
+    next();
+});
 
-export default router
+export default router;
