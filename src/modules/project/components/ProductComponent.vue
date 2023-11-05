@@ -10,7 +10,7 @@
       <div class="product-price-info">
         <div class="product-price-title">상품 가격</div>
         <div class="product-price-data" v-if='lotdealDueTime == null' >{{ product.productPrice }} 원</div>
-        <div class="product-price-data" v-else><div class = "lotdeal-text"> 롯딜 할인가  </div> {{ product.productPrice * 0.6 }} 원</div>
+        <div class="product-price-data" v-else>{{ product.productPrice * 0.6 }} 원</div>
       </div>
       <div class="product-current-stock-quantity-info">
         <div class="product-current-stock-quantity-title">남은 수량</div>
@@ -132,7 +132,7 @@ const goFunding = () => {
     if (quantity != undefined && quantity > 0) {
       fundingProducts.push({
         productId: projectId.value,
-        productFundingPrice: productPrice,
+        productFundingPrice: product.productPrice,
         productName: product.productName,
         productDescription: product.productDescription,
         productFundingQuantity: quantity
