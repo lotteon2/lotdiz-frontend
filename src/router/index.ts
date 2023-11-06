@@ -172,7 +172,7 @@ const router = createRouter({
       meta: { authRequired: true }
     },
     {
-      path: '/funding/details',
+      path: '/funding/details/:fundingId',
       name: 'fundingDetails',
       component: FundingDetailsView,
       meta: { authRequired: true }

@@ -69,8 +69,35 @@ onMounted(
         console.log("partnerOrderId: " + fundingPaymentsRequest.partnerOrderId + "partnerUserId" + fundingPaymentsRequest.partnerUserId)
         console.log(fundingPaymentsRequest.pgToken);
 
+        // store에 저장된 값들 넣기
+        fundingPaymentsRequest.projectId = fundingDetailInfo.projectId
+        fundingPaymentsRequest.products = fundingDetailInfo.products
+        fundingPaymentsRequest.itemName = fundingDetailInfo.itemName
+        fundingPaymentsRequest.fundingSupporterEmail = fundingDetailInfo.fundingSupporterEmail
+        fundingPaymentsRequest.fundingTotalAmount= fundingDetailInfo.fundingTotalAmount
+        fundingPaymentsRequest.fundingIsRefundable= fundingDetailInfo.fundingIsRefundable
+        fundingPaymentsRequest.fundingSupportAmount= fundingDetailInfo.fundingSupportAmount
+        fundingPaymentsRequest.fundingLotdealDiscountAmount= fundingDetailInfo.fundingLotdealDiscountAmount
+        fundingPaymentsRequest.fundingMembershipDiscountAmount= fundingDetailInfo.fundingMembershipDiscountAmount
+        fundingPaymentsRequest.fundingUsedPoint= fundingDetailInfo.fundingUsedPoint
+        fundingPaymentsRequest.fundingPrivacyAgreement= fundingDetailInfo.fundingPrivacyAgreement
+        fundingPaymentsRequest.supporterWithUsIsAmountPublic= fundingDetailInfo.supporterWithUsIsAmountPublic
+        fundingPaymentsRequest.supporterWithUsIsNamePublic= fundingDetailInfo.supporterWithUsIsNamePublic
+        fundingPaymentsRequest.deliveryCost= fundingDetailInfo.deliveryCost
+        fundingPaymentsRequest.fundingPaymentsActualAmount= fundingDetailInfo.fundingPaymentsActualAmount
+        fundingPaymentsRequest.deliveryAddressRecipientName= fundingDetailInfo.deliveryAddressRecipientName
+        fundingPaymentsRequest.deliveryAddressRecipientPhoneNumber= fundingDetailInfo.deliveryAddressRecipientPhoneNumber
+        fundingPaymentsRequest.deliveryAddressRequest= fundingDetailInfo.deliveryAddressRequest
+        fundingPaymentsRequest.deliveryAddressRoadName= fundingDetailInfo.deliveryAddressRoadName
+        fundingPaymentsRequest.deliveryAddressDetail= fundingDetailInfo.deliveryAddressDetail
+        fundingPaymentsRequest.deliveryAddressZipCode= fundingDetailInfo.deliveryAddressZipCode
+
+        console.log("fundingPaymentsRequest: "+ JSON.stringify(fundingPaymentsRequest));
+        console.log("fundingStore: "+ JSON.stringify(fundingDetailInfo));
+
+
         // TODO: projectID 받아서 넣기
-        const response = await postFundingInfoForPayApproval(fundingPaymentsRequest, 1)
+        const response = await postFundingInfoForPayApproval(fundingPaymentsRequest, fundingDetailInfo.projectId)
         alert(response.detail)
         messageData.fundingId = response.data
 

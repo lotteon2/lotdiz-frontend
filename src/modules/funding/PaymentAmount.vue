@@ -6,7 +6,7 @@
     <div class='payments-info-content'>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>상품 금액</div>
-        <div class='payments-info-item-right'>{{ fundingTotalAmount }}</div>
+        <div class='payments-info-item-right'>{{ fundingTotalAmount }}원</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>포인트 할인</div>
@@ -14,7 +14,7 @@
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>멤버십 등급 할인({{ membershipDiscount }}%)</div>
-        <div class='payments-info-item-right' style='color: red'>{{ fundingMembershipDiscountAmount }}</div>
+        <div class='payments-info-item-right' style='color: red'>{{ fundingMembershipDiscountAmount ? '-' + fundingMembershipDiscountAmount + '원' : '0원'}}</div>
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>후원금</div>
@@ -22,11 +22,11 @@
       </div>
       <div class='payments-info-item'>
         <div class='payments-info-item-left'>배송비</div>
-        <div class='payments-info-item-right'>{{ deliveryCost }}</div>
+        <div class='payments-info-item-right'>{{ deliveryCost ? deliveryCost + '원' : '0원'}}</div>
       </div>
       <div class='payments-info-item-total'>
         <div class='payments-info-item-total-left'>총 결제 금액</div>
-        <div class='payments-info-item-total-right'>{{ fundingPaymentsActualAmount }}</div>
+        <div class='payments-info-item-total-right'>{{ fundingPaymentsActualAmount ? fundingPaymentsActualAmount + '원' : '0원'}}</div>
       </div>
     </div>
   </div>
@@ -64,15 +64,19 @@ if (fundingTotalAmount.value < 50000) {
 }
 
 fundingMembershipDiscountAmount.value = fundingTotalAmount.value * (membershipDiscount.value * 0.01)
+console.log(fundingMembershipDiscountAmount.value);
+
 fundingPaymentsActualAmount.value = fundingTotalAmount.value * (1 - membershipDiscount.value * 0.01) - usedPoint.value + supportAmount.value + deliveryCost.value
 
 fundingStore.updateData({fundingMembershipDiscountAmount: fundingMembershipDiscountAmount.value})
 fundingStore.updateData({deliveryCost: deliveryCost.value})
 fundingStore.updateData({fundingTotalAmount: fundingTotalAmount.value})
 
-watch ([usedPoint, supportAmount], ([newUsedPoint, newSupportAmount]) => {
+watch ([usedPoint, supportAmount, membershipDiscount], ([newUsedPoint, newSupportAmount, newMembershipDiscount]) => {
   fundingPaymentsActualAmount.value = fundingTotalAmount.value * (1 - membershipDiscount.value * 0.01) - newUsedPoint + newSupportAmount + deliveryCost.value
   fundingStore.updateData({fundingPaymentsActualAmount: fundingPaymentsActualAmount.value})
+  fundingMembershipDiscountAmount.value = fundingTotalAmount.value * (newMembershipDiscount * 0.01);
+  fundingStore.updateData({fundingMembershipDiscountAmount: fundingMembershipDiscountAmount.value})
 })
 
 onBeforeMount(() => {
