@@ -38,5 +38,5 @@ type Props = {
 const { text, color, backgroundColor, border } = defineProps<Props>()
 </script>
 
-<style>
+<style scoped>
 </style>

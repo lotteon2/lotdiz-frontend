@@ -4,3 +4,11 @@ export interface ProductItemType {
     productPrice: Number,
     productRegisteredStockQuantity: Number
 }
+
+export interface ProductFundingInfoResponse {
+    productId: number;
+    productName: string;
+    productDescription: string;
+    productFundingPrice: number;
+    productFundingQuantity: number;
+}

@@ -1,14 +1,17 @@
-import {defineStore} from "pinia";
-import type {FundingDetail} from "@/services/types/FundingRequest";
+import {defineStore} from 'pinia'
+import type {FundingDetailInfo, FundingDetailsInfoResponse} from '@/services/types/FundingRequest'
+import {getInfoForFundingDetails} from '@/services/api/FundingService'
 
 interface FundingState {
-    fundingDetails: FundingDetail;
+    fundingDetailInfo: FundingDetailInfo;
 }
 
-export const useFundingStore = defineStore("funding", {
+export const useFundingStore = defineStore('funding', {
 
     state: (): FundingState => ({
-        fundingDetails: {
+        fundingDetailInfo: {
+            projectId: 0,
+            products: [],
             itemName: '',
             fundingSupporterEmail: '',
             fundingTotalAmount: 0,
@@ -18,8 +21,8 @@ export const useFundingStore = defineStore("funding", {
             fundingMembershipDiscountAmount: 0,
             fundingUsedPoint: 0,
             fundingPrivacyAgreement: true,
-            supporterWithUsIsAmountPublic: true,
-            supporterWithUsIsNamePublic: true,
+            supporterWithUsIsAmountPublic: false,
+            supporterWithUsIsNamePublic: false,
             deliveryCost: 0,
             fundingPaymentsActualAmount: 0,
             deliveryAddressRecipientName: '',
@@ -33,10 +36,56 @@ export const useFundingStore = defineStore("funding", {
 
     actions: {
         // 부분적인 데이터 업데이트를 위한 메소드
-        updateData(partialFundingInfos: Partial<FundingDetail>) {
+        updateData(partialFundingInfos: Partial<FundingDetailInfo>) {
             // Object.assign을 사용하여 현재 상태에 새로운 데이터를 병합
-            Object.assign(this.fundingDetails, partialFundingInfos);
+            Object.assign(this.fundingDetailInfo, partialFundingInfos)
+        }
+    }
+
+})
+
+interface FundingDetailSate {
+    fundingDetailsInfo: FundingDetailsInfoResponse
+}
+
+export const useFundingDetailStore = defineStore('fundingDetailInfo', {
+    state: (): FundingDetailSate => ({
+        fundingDetailsInfo: {
+            projectId: 0,
+            projectStatus: '',
+            projectName: '',
+            makerName: '',
+            fundingId: 0,
+            createdAt: '',
+            endDate: '',
+            fundingStatus: '',
+            fundingTotalAmount: 0,
+            fundingUsedPoint: 0,
+            fundingSupportAmount: 0,
+            fundingMembershipDiscountAmount: 0,
+            fundingPaymentsActualAmount: 0,
+            products: [],
+            deliveryCost: 0,
+            deliveryRecipientName: '',
+            deliveryRecipientPhoneNumber: '',
+            deliveryRoadName: '',
+            deliveryAddressDetail: '',
+            deliveryZipcode: ''
+
+        }
+    }),
+    actions: {
+        async setData(fundingId: number) {
+            try {
+                const response: any = await getInfoForFundingDetails(fundingId)
+                if (response !== undefined) {
+                    this.fundingDetailsInfo = response.data.fundingDetails
+                    console.log(response.data.fundingDetails)
+                }
+            } catch (error) {
+                alert('펀딩상세 내역 조회 실패')
+            }
         }
     },
-
-});
+    persist: true
+})

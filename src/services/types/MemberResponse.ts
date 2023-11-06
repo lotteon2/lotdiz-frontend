@@ -29,3 +29,15 @@ export interface LikesDetailResponse {
     fundingAchievementRate: number,
     accumulatedFundingAmount: number
 }
+
+export interface DeliveryAddressInfoForShowResponse {
+    deliveryAddressId: number,
+    deliveryAddressRecipientName: string,
+    deliveryAddressRecipientPhoneNumber: string,
+    deliveryAddressRecipientEmail: string,
+    deliveryAddressRequest: string,
+    deliveryAddressRoadName: string,
+    deliveryAddressDetail: string,
+    deliveryAddressZipCode: string,
+    deliveryAddressIsDefault: boolean
+}

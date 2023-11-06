@@ -111,6 +111,15 @@ export const putMemberInfoForChange = async (memberInfoForChangeRequest: MemberI
   }
 }
 
+export const getAddressForShow = async () => {
+  try {
+    const response = await getData<Array<DeliveryAddressInfoForShowResponse>>('/member-service/api/members/delivery-address')
+    return response.data
+  } catch (error: unknown) {
+    throw new Error('배송지 정보 조회 실패')
+  }
+}
+
 export const postSignOut = async () => {
   try {
     const response = await postMemberData('/member-service/api/sign-out')
